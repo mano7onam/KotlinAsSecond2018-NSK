@@ -81,7 +81,7 @@ fun digitNumber(n: Long): Int = n.toString().length
 fun fib(n: Int): Int {
     var a = 1
     var b = 1
-    for (i in 1 until n - 1) {
+    for (i in 1 until n) {
         val c = a + b
         a = b
         b = c
@@ -96,13 +96,22 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun gcd(a: Int, b: Int) : Int {
-    if (a == 0) {
-        return b
+    if (b == 0) {
+        return a
     }
     return gcd(b, a % b)
 }
 
-fun lcm(m: Int, n: Int) = (m / gcd(m, n)) * n
+fun lcm(m: Int, n: Int) : Int {
+    if (n == 0) {
+        return m
+    }
+    if (m == 0) {
+        return n
+    }
+    return (m / gcd(m, n)) * n
+}
+
 
 /**
  * Простая
@@ -146,6 +155,13 @@ fun isCoPrime(m: Int, n: Int): Boolean = (gcd(m, n) == 1)
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
+    if (m < 0 && n < 0) {
+        return false
+    }
+    if (m <= 0 && n >= 0) {
+        return true
+    }
+
     var num = 1
     while (num * num <= n) {
         if (num * num >= m) {
@@ -153,6 +169,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
         }
         num++
     }
+
     return false
 }
 
@@ -169,7 +186,7 @@ fun sin(x: Double, eps: Double): Double {
     var sgn = -1
     var cur = 2
     var elem = x
-    while (elem >= eps) {
+    while (Math.abs(elem) >= eps) {
         res += elem
 
         elem *= sgn
@@ -196,7 +213,7 @@ fun cos(x: Double, eps: Double): Double {
     var sgn = -1
     var cur = 1
     var elem = 1.0
-    while (elem >= eps) {
+    while (Math.abs(elem) >= eps) {
         res += elem
 
         elem *= sgn

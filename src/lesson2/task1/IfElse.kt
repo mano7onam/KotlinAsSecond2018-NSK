@@ -35,7 +35,7 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String {
     val ageStr = age.toString()
-    if (age % 100 in 5..20) {
+    if (age % 100 in 5..20 || age % 10 == 0 || age % 10 >= 5) {
         return ageStr + " лет"
     }
     if (age % 10 == 1) {
@@ -140,10 +140,10 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     }
 
     if (tc < ta + tb - eps) {
-        return 1
+        return 2
     }
     if (tc > ta + tb + eps) {
-        return 2
+        return 1
     }
     return 0
 }
@@ -157,8 +157,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int) : Int {
-    if (Math.min(d, b) - Math.max(a, c) <= 0) {
+    if (Math.min(d, b) - Math.max(a, c) < 0) {
         return -1
     }
-    return Math.max(0, Math.min(d, b) - Math.max(a, c))
+    return Math.min(d, b) - Math.max(a, c)
 }
