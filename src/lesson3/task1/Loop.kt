@@ -272,8 +272,8 @@ fun getFirstNumWithSqrLen(len : Int) : Int {
     var l = 1
     var r = len
     while (l < r - 1) {
-        var m = (l + r) / 2
-        var mmLen = digitNumber(m.toLong() * m.toLong())
+        val m = (l + r) / 2
+        val mmLen = digitNumber(m.toLong() * m.toLong())
         if (mmLen > len) {
             r = m
         }
