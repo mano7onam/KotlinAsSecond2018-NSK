@@ -302,7 +302,7 @@ fun getFirstNumWithSqrLen(len : Int) : Int {
     return l
 }
 
-fun getDigitInNumber(n : Int, ind: Int) : Int = n.toString()[ind].toInt()
+fun getDigitInNumber(n : Int, ind: Int) : Int = (n.toString()[ind].toString()).toInt()
 
 fun squareSequenceDigit(n: Int): Int {
     val first = "149162536496481100121144"
@@ -317,7 +317,12 @@ fun squareSequenceDigit(n: Int): Int {
         val l = getFirstNumWithSqrLen(curLen)
         val r = getFirstNumWithSqrLen(curLen + 1) - 1
         val cut = (r - l + 1) * curLen
-        if (allLen + cut > n) {
+        if (allLen + cut >= n) {
+            if (allLen + cut == n) {
+                lastNum = l + 1 + (n - allLen - 1) / curLen
+                rest = curLen - 1
+                break
+            }
             lastNum = l + (n - allLen - 1) / curLen
             rest = (n - allLen - 1) % curLen
             break
@@ -339,15 +344,24 @@ fun fibSequenceDigit(n: Int): Int {
     var allLen = 0
     var lastNum = 0
     var rest = 0
-    for (num in 1..n) {
-        val cut = digitNumber(num)
-        if (allLen + cut > n) {
+    for (num in 1 .. n + 1) {
+        val cut = digitNumber(fib(num))
+        if (allLen + cut >= n) {
+            allLen += cut
             lastNum = num
-            rest = n - allLen
+            rest = cut - (allLen - n) - 1
             break
         }
         allLen += cut
     }
 
-    return getDigitInNumber(lastNum, rest)
+    return getDigitInNumber(fib(lastNum), rest)
+}
+
+fun main(args: Array<String>) {
+    // Решаем x^2 - 3*x + 2 = 0
+    for (i in 1..10) {
+        val res = fibSequenceDigit(i)
+        println("Result: $res")
+    }
 }
