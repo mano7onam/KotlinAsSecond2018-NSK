@@ -125,7 +125,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
         return -1
     }
 
-    val eps = 0.000000001
+    val eps = 1e-10
     var ta = a * a
     var tb = b * b
     var tc = c * c
@@ -140,12 +140,12 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     }
 
     if (tc < ta + tb - eps) {
-        return 2
+        return 0
     }
     if (tc > ta + tb + eps) {
-        return 1
+        return 2
     }
-    return 0
+    return 1
 }
 
 /**
