@@ -181,16 +181,17 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
+    val ang = x % (Math.PI * 2)
     var res = 0.0
 
     var sgn = -1
     var cur = 2
-    var elem = x
+    var elem = ang
     while (Math.abs(elem) >= eps) {
         res += elem
 
         elem *= sgn
-        elem *= x * x
+        elem *= ang * ang
         elem /= cur * (cur + 1)
 
         sgn *= -1
@@ -208,6 +209,7 @@ fun sin(x: Double, eps: Double): Double {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
+    val ang = x % (Math.PI * 2)
     var res = 0.0
 
     var sgn = -1
@@ -217,7 +219,7 @@ fun cos(x: Double, eps: Double): Double {
         res += elem
 
         elem *= sgn
-        elem *= x * x
+        elem *= ang * ang
         elem /= cur * (cur + 1)
 
         sgn *= -1
@@ -225,6 +227,11 @@ fun cos(x: Double, eps: Double): Double {
     }
 
     return res
+}
+
+fun main(args: Array<String>) {
+    val res = cos(-6.5798912800186224, 1e-10)
+    println("Res: $res")
 }
 
 /**
@@ -352,14 +359,5 @@ fun fibSequenceDigit(n: Int): Int {
     }
 
     return getDigitInNumber(fib(lastNum), rest)
-}
-
-fun main(args: Array<String>) {
-    // Решаем x^2 - 3*x + 2 = 0
-    for (i in 1..30) {
-        val res = squareSequenceDigit(i)
-        println("Root product: $res")
-    }
-
 }
 
