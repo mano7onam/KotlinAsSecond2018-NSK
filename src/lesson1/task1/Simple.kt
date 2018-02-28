@@ -61,8 +61,8 @@ fun seconds(hours: Int, minutes: Int, seconds: Int) = (hours * 60 + minutes) * 6
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
-    val allVershoks = 48.0 * sagenes.toDouble() + 16.0 * arshins.toDouble() + vershoks.toDouble()
-    return allVershoks * 4.455 / 100.0
+    val allVershoks = 48 * sagenes + 16 * arshins + vershoks
+    return (allVershoks / 100.0) * 4.445
 }
 
 /**
