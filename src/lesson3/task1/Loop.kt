@@ -184,13 +184,12 @@ fun sin(x: Double, eps: Double): Double {
     val ang = x % (Math.PI * 2)
     var res = 0.0
 
-    var sgn = -1
+    var sgn = 1
     var cur = 2
     var elem = ang
     while (Math.abs(elem) >= eps) {
-        res += elem
+        res += sgn * elem
 
-        elem *= sgn
         elem *= ang * ang
         elem /= cur * (cur + 1)
 
@@ -212,13 +211,12 @@ fun cos(x: Double, eps: Double): Double {
     val ang = x % (Math.PI * 2)
     var res = 0.0
 
-    var sgn = -1
+    var sgn = 1
     var cur = 1
     var elem = 1.0
     while (Math.abs(elem) >= eps) {
-        res += elem
+        res += sgn * elem
 
-        elem *= sgn
         elem *= ang * ang
         elem /= cur * (cur + 1)
 
@@ -230,7 +228,7 @@ fun cos(x: Double, eps: Double): Double {
 }
 
 fun main(args: Array<String>) {
-    val res = cos(-6.5798912800186224, 1e-10)
+    val res = cos(-18.832102629018816, 0.5924174389012276)
     println("Res: $res")
 }
 
