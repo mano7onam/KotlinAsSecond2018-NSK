@@ -162,7 +162,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
         return true
     }
 
-    var num = 1
+    var num = 1L
     while (num * num <= n) {
         if (num * num >= m) {
             return true
@@ -171,6 +171,11 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
     }
 
     return false
+}
+
+fun main(args: Array<String>) {
+    val res = squareBetweenExists(100000001, 1000000000)
+    println("Res: $res")
 }
 
 /**
@@ -225,11 +230,6 @@ fun cos(x: Double, eps: Double): Double {
     }
 
     return res
-}
-
-fun main(args: Array<String>) {
-    val res = cos(-18.832102629018816, 0.5924174389012276)
-    println("Res: $res")
 }
 
 /**
