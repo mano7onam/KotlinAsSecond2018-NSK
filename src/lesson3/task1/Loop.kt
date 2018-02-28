@@ -287,11 +287,11 @@ fun getFirstNumWithSqrLen(len : Int) : Int {
     }
 
     var l = 1
-    var r = len
+    var r = 1000000000
     while (l < r - 1) {
         val m = (l + r) / 2
         val mmLen = digitNumber(m.toLong() * m.toLong())
-        if (mmLen > len) {
+        if (mmLen >= len) {
             r = m
         }
         else {
@@ -299,7 +299,7 @@ fun getFirstNumWithSqrLen(len : Int) : Int {
         }
     }
 
-    return l
+    return r
 }
 
 fun getDigitInNumber(n : Int, ind: Int) : Int = (n.toString()[ind].toString()).toInt()
@@ -319,19 +319,14 @@ fun squareSequenceDigit(n: Int): Int {
         val cut = (r - l + 1) * curLen
         if (allLen + cut >= n) {
             allLen += cut
-            if (allLen + cut == n) {
-                lastNum = l + 1 + (n - allLen - 1) / curLen
-                rest = curLen - 1
-                break
-            }
-            lastNum = l + (n - allLen - 1) / curLen
-            rest = (n - allLen - 1) % curLen
+            lastNum = r - (allLen - n) / curLen
+            rest = curLen - 1 - (allLen - n) % curLen
             break
         }
         allLen += cut
     }
 
-    return getDigitInNumber(lastNum, rest)
+    return getDigitInNumber(lastNum * lastNum, rest)
 }
 
 /**
@@ -357,5 +352,14 @@ fun fibSequenceDigit(n: Int): Int {
     }
 
     return getDigitInNumber(fib(lastNum), rest)
+}
+
+fun main(args: Array<String>) {
+    // Решаем x^2 - 3*x + 2 = 0
+    for (i in 1..30) {
+        val res = squareSequenceDigit(i)
+        println("Root product: $res")
+    }
+
 }
 
