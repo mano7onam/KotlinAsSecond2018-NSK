@@ -138,6 +138,9 @@ fun center(list: MutableList<Double>): MutableList<Double> {
 fun times(a: List<Double>, b: List<Double>): Double =
         a.foldIndexed(0.0) { i, sum, el -> sum + el * b[i] }
 
+fun times(a: List<Int>, b: List<Int>): Int =
+        a.foldIndexed(0) { i, sum, el -> sum + el * b[i] }
+
 /**
  * Средняя
  *
@@ -148,6 +151,12 @@ fun times(a: List<Double>, b: List<Double>): Double =
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var cur = 1.0
+    val xs = p.map { val last = cur; cur *= x; last }
+    return times(p, xs)
+}
+
+fun polynom(p: List<Int>, x: Int): Int {
+    var cur = 1
     val xs = p.map { val last = cur; cur *= x; last }
     return times(p, xs)
 }
@@ -202,7 +211,15 @@ fun factorizeToString(n: Int): String =
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    var num = n
+    val res = arrayListOf<Int>()
+    while (num > 0) {
+        res.add(num % base)
+        num /= base
+    }
+    return res.reversed()
+}
 
 /**
  * Сложная
@@ -212,7 +229,11 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * строчными буквами: 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String =
+    (convert(n, base).map {
+        if (it < 10) it.toString()[0] else ('a' + it - 10)
+    }).joinToString()
+
 
 /**
  * Средняя
@@ -221,7 +242,8 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int =
+        polynom(digits.reversed(), 10)
 
 /**
  * Сложная
