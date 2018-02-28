@@ -264,11 +264,11 @@ fun hasDifferentDigits(n: Int): Boolean {
     var num = n / 10
     while (num > 0) {
         if (num % 10 != last) {
-            return false
+            return true
         }
         num /= 10
     }
-    return true
+    return false
 }
 
 /**
