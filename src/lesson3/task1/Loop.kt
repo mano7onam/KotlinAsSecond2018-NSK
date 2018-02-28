@@ -61,7 +61,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
 fun digitNumber(n: Int): Int {
-    var num = n
+    var num = Math.abs(n)
     var cnt = 0
     while (num > 0) {
         num /= 10
@@ -70,7 +70,7 @@ fun digitNumber(n: Int): Int {
     return Math.max(1, cnt) // max for 0 case
 }
 
-fun digitNumber(n: Long): Int = n.toString().length
+fun digitNumber(n: Long): Int = Math.abs(n).toString().length
 
 /**
  * Простая
