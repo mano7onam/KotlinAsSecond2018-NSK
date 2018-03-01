@@ -285,7 +285,29 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var num = n
+    val t = listOf("I", "V", "X", "L", "C", "D", "M")
+    var ans = ""
+    for (i in 0..3) {
+        val d = num % 10
+        val tmp = when (d) {
+            1 -> t[i * 2]
+            2 -> t[i * 2] + t[i * 2]
+            3 -> t[i * 2] + t[i * 2] + t[i * 2]
+            4 -> t[i * 2] + t[i * 2 + 1]
+            5 -> t[i * 2 + 1]
+            6 -> t[i * 2 + 1] + t[i * 2]
+            7 -> t[i * 2 + 1] + t[i * 2] + t[i * 2]
+            8 -> t[i * 2 + 1] + t[i * 2] + t[i * 2] + t[i * 2]
+            9 -> t[i * 2] + t[i * 2 + 2]
+            else -> ""
+        }
+        ans = tmp + ans
+        num /= 10
+    }
+    return ans
+}
 
 /**
  * Очень сложная
