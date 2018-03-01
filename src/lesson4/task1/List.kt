@@ -216,6 +216,9 @@ fun factorizeToString(n: Int): String =
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
+    if (n == 0) {
+        return listOf(0)
+    }
     var num = n
     val res = arrayListOf<Int>()
     while (num > 0) {
@@ -261,14 +264,11 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    var cur = 1
-    return str.toCharArray().reversed().fold(0) { sum, symb ->
-        val last = cur
-        cur *= base
+    return str.toCharArray().fold(0) { sum, symb ->
         if (symb.isDigit())
-            sum + (symb - '0') * last
+            sum * base + (symb - '0')
         else
-            sum + (symb - 'a') * last
+            sum * base + (symb - 'a')
     }
 }
 
@@ -401,7 +401,7 @@ fun russianDozensHundreds(n: Int) : String {
     if (n % 10 == 0) {
         return russianHundreds(n / 10)
     }
-    return russianHundreds(n / 10) + " " + russianDozens(n)
+    return russianHundreds(n / 10) + " " + russianDozens(n % 10)
 }
 
 fun russianAllThousands(n: Int) : String {
@@ -441,7 +441,7 @@ fun russianUnitsDozensHundreds(n: Int) : String {
         else
             russianHundreds(n) + " " + russianTenNineeen(n)
     }
-    return russianDozensHundreds(n / 10) + " " + russianUnits(n)
+    return russianDozensHundreds(n / 10) + " " + russianUnits(n % 10)
 }
 
 fun russian(n: Int): String {
@@ -454,5 +454,5 @@ fun russian(n: Int): String {
     if (n % 1000 == 0) {
         return russianAllThousands(n / 1000)
     }
-    return russianAllThousands(n / 1000) + " " + russianUnitsDozensHundreds(n)
+    return russianAllThousands(n / 1000) + " " + russianUnitsDozensHundreds(n % 1000)
 }
