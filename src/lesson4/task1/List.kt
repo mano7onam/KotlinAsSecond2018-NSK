@@ -268,7 +268,7 @@ fun decimalFromString(str: String, base: Int): Int {
         if (symb.isDigit())
             sum * base + (symb - '0')
         else
-            sum * base + (symb - 'a')
+            sum * base + (symb - 'a') + 10
     }
 }
 
@@ -419,7 +419,7 @@ fun russianAllThousands(n: Int) : String {
         return if (n < 100)
             russianTenNineeen(n) + " тысяч"
         else
-            russianHundreds(n) + " " + russianTenNineeen(n) + " тысяч"
+            russianHundreds(n / 100) + " " + russianTenNineeen(n % 100) + " тысяч"
     }
     return russianDozensHundreds(n / 10) + " " + russianUnitsThousands(n % 10)
 }
@@ -439,7 +439,7 @@ fun russianUnitsDozensHundreds(n: Int) : String {
         return if (n < 100)
             russianTenNineeen(n)
         else
-            russianHundreds(n) + " " + russianTenNineeen(n)
+            russianHundreds(n / 100) + " " + russianTenNineeen(n % 100)
     }
     return russianDozensHundreds(n / 10) + " " + russianUnits(n % 10)
 }
