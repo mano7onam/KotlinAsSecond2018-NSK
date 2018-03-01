@@ -2,6 +2,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.squareBetweenExists
 
 /**
  * Пример
@@ -125,7 +126,7 @@ fun mean(list: List<Double>): Double = (list.map { it / list.size.toDouble() }).
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
     val mid = mean(list)
-    return list.apply { forEach { el -> el - mid } }
+    return list.apply { forEachIndexed { ind,  el -> list[ind] -= mid } }
 }
 
 /**
@@ -138,8 +139,8 @@ fun center(list: MutableList<Double>): MutableList<Double> {
 fun times(a: List<Double>, b: List<Double>): Double =
         a.foldIndexed(0.0) { i, sum, el -> sum + el * b[i] }
 
-fun times(a: List<Int>, b: List<Int>): Int =
-        a.foldIndexed(0) { i, sum, el -> sum + el * b[i] }
+//fun times(a: List<Int>, b: List<Int>): Int =
+//        a.foldIndexed(0) { i, sum, el -> sum + el * b[i] }
 
 /**
  * Средняя
@@ -155,11 +156,11 @@ fun polynom(p: List<Double>, x: Double): Double {
     return times(p, xs)
 }
 
-fun polynom(p: List<Int>, x: Int): Int {
-    var cur = 1
-    val xs = p.map { val last = cur; cur *= x; last }
-    return times(p, xs)
-}
+//fun polynom(p: List<Int>, x: Int): Int {
+//    var cur = 1
+//    val xs = p.map { val last = cur; cur *= x; last }
+//    return times(p, xs)
+//}
 
 /**
  * Средняя
@@ -173,7 +174,15 @@ fun polynom(p: List<Int>, x: Int): Int {
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
     var sum = 0.0
-    return list.apply { forEach { el -> sum += el; } }
+    return list.apply { forEachIndexed { ind, el ->
+        list[ind] = sum + el
+        sum += el
+    } }
+}
+
+fun main(args: Array<String>) {
+    val res = accumulate(mutableListOf(1.0, 2.0, 3.0))
+    println("Result: $res")
 }
 
 /**
@@ -202,7 +211,7 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  */
 fun factorizeToString(n: Int): String =
-        factorize(n).joinToString(separator = "*", prefix = "$n -> ")
+        factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
@@ -242,8 +251,10 @@ fun convertToString(n: Int, base: Int): String =
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int =
-        polynom(digits.reversed(), 10)
+fun decimal(digits: List<Int>, base: Int): Int {
+    var cur = 1
+    return (digits.reversed().map { val last = cur; cur *= base; last * it }).sum()
+}
 
 /**
  * Сложная
@@ -254,7 +265,17 @@ fun decimal(digits: List<Int>, base: Int): Int =
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    var cur = 1
+    return str.toCharArray().reversed().fold(0) { sum, symb ->
+        val last = cur
+        cur *= base
+        if (symb.isDigit())
+            sum + (symb - '0') * last
+        else
+            sum + (symb - 'a') * last
+    }
+}
 
 /**
  * Сложная
