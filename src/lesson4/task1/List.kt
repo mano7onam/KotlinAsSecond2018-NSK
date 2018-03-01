@@ -180,11 +180,6 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
     } }
 }
 
-fun main(args: Array<String>) {
-    val res = accumulate(mutableListOf(1.0, 2.0, 3.0))
-    println("Result: $res")
-}
-
 /**
  * Средняя
  *
@@ -241,7 +236,7 @@ fun convert(n: Int, base: Int): List<Int> {
 fun convertToString(n: Int, base: Int): String =
     (convert(n, base).map {
         if (it < 10) it.toString()[0] else ('a' + it - 10)
-    }).joinToString()
+    }).joinToString(separator="")
 
 
 /**
@@ -287,26 +282,23 @@ fun decimalFromString(str: String, base: Int): Int {
  */
 fun roman(n: Int): String {
     var num = n
-    val t = listOf("I", "V", "X", "L", "C", "D", "M")
-    var ans = ""
-    for (i in 0..3) {
-        val d = num % 10
-        val tmp = when (d) {
-            1 -> t[i * 2]
-            2 -> t[i * 2] + t[i * 2]
-            3 -> t[i * 2] + t[i * 2] + t[i * 2]
-            4 -> t[i * 2] + t[i * 2 + 1]
-            5 -> t[i * 2 + 1]
-            6 -> t[i * 2 + 1] + t[i * 2]
-            7 -> t[i * 2 + 1] + t[i * 2] + t[i * 2]
-            8 -> t[i * 2 + 1] + t[i * 2] + t[i * 2] + t[i * 2]
-            9 -> t[i * 2] + t[i * 2 + 2]
-            else -> ""
+    val arrStr = listOf("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M").reversed()
+    val arrNum = listOf(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000).reversed()
+    var ind = 0
+    val ans = arrayListOf<String>()
+    while (num > 0) {
+        while (num > 0 && num >= arrNum[ind]) {
+            num -= arrNum[ind]
+            ans.add(arrStr[ind])
         }
-        ans = tmp + ans
-        num /= 10
+        ind++
     }
-    return ans
+    return ans.joinToString(separator = "")
+}
+
+fun main(args: Array<String>) {
+    val res = roman(4497)
+    println("Result: $res")
 }
 
 /**
