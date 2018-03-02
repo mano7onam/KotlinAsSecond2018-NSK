@@ -66,7 +66,54 @@ fun main(args: Array<String>) {
  * День и месяц всегда представлять двумя цифрами, например: 03.04.2011.
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateStrToDigit(str: String): String = TODO()
+
+fun monthToNumStr(month : String) : String {
+    return when (month) {
+        "января" -> "01"
+        "февряля" -> "02"
+        "марта" -> "03"
+        "апреля" -> "04"
+        "мая" -> "05"
+        "июня" -> "06"
+        "июля" -> "07"
+        "августа" -> "08"
+        "сентября" -> "09"
+        "октября" -> "10"
+        "ноября" -> "11"
+        "декабря" -> "12"
+        else -> ""
+    }
+}
+
+fun numStrToMonth(month : String) : String {
+    return when (month) {
+        "01" -> "января"
+        "02" -> "февряля"
+        "03" -> "марта"
+        "04" -> "апреля"
+        "05" -> "мая"
+        "06" -> "июня"
+        "07" -> "июля"
+        "08" -> "августа"
+        "09" -> "сентября"
+        "10" -> "октября"
+        "11" -> "ноября"
+        "12" -> "декабря"
+        else -> ""
+    }
+}
+
+fun numStrToTwoDigits(num : String) : String =
+        if (num.length == 2) num else "0" + num
+
+fun eraseLeadingZeros(num : String) : String =
+    if (num[0] == '0') num[1].toString() else num
+
+
+fun dateStrToDigit(str: String): String {
+    val parts = str.split(' ')
+    return numStrToTwoDigits(parts[0]) + "." + monthToNumStr(parts[1]) + "." + parts[2]
+}
 
 /**
  * Средняя
@@ -75,7 +122,10 @@ fun dateStrToDigit(str: String): String = TODO()
  * Перевести её в строковый формат вида "15 июля 2016".
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val parts = digital.split('.')
+    return eraseLeadingZeros(parts[0]) + " " + numStrToMonth(parts[1]) + " " + parts[2]
+}
 
 /**
  * Средняя
@@ -89,7 +139,10 @@ fun dateDigitToStr(digital: String): String = TODO()
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String =
+        if (phone.matches(Regex("todo")))
+            phone.replace("-", "").replace(" ", "")
+        else ""
 
 /**
  * Средняя
@@ -101,7 +154,13 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    if (!jumps.matches(Regex("todo"))) {
+        return -1
+    }
+    //val parts = jumps.split(" ")
+    return 0
+}
 
 /**
  * Сложная
