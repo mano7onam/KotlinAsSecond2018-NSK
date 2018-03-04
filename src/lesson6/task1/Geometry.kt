@@ -2,6 +2,7 @@
 package lesson6.task1
 
 import lesson1.task1.sqr
+import lesson4.task1.roman
 import java.util.*
 
 /**
@@ -224,6 +225,9 @@ fun lineByPoints(a: Point, b: Point): Line {
     if (ang < 0) {
         ang = Math.PI - ang
     }
+    if (ang > Math.PI) {
+        ang -= Math.PI
+    }
     return Line(a, ang)
 }
 
@@ -251,11 +255,13 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
 
     var res = Pair(circles[0], circles[1])
     var maxDist = res.first.distance(res.second)
-    circles.forEach { c1 -> circles.forEach { c2 ->
-        val curDist = c1.distance(c2)
-        if (c1.distance(c2) < maxDist) {
-            maxDist = curDist
-            res = Pair(c1, c2)
+    circles.forEachIndexed { ind1, c1 -> circles.forEachIndexed { ind2, c2 ->
+        if (ind1 != ind2) {
+            val curDist = c1.distance(c2)
+            if (c1.distance(c2) < maxDist) {
+                maxDist = curDist
+                res = Pair(c1, c2)
+            }
         }
     } }
 
@@ -276,6 +282,14 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
     val radius = (center - a).lenVect()
     return Circle(center, radius)
     // it was unreal hard
+}
+
+fun main(args: Array<String>) {
+    val a = Point(0.0, 0.0)
+    val b = Point(1.0, 0.0)
+    val c = Point(0.0, 1.0)
+    val cir = circleByThreePoints(a, b, c)
+    println("Result: $cir")
 }
 
 /**
@@ -323,8 +337,11 @@ fun mccList(ps: List<Point>) : Circle {
         if (!curCircle.contains(p)) {
             curCircle = mccListPoint(listFirstPs, p)
         }
+        listFirstPs.add(p)
     }
     return curCircle
 }
 
 fun minContainingCircle(vararg points: Point): Circle = mccList(points.toList())
+
+
