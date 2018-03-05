@@ -118,7 +118,7 @@ fun generateRectangles(height: Int, width: Int): Matrix<Int> {
  * 10 13 16 18
  * 14 17 19 20
  */
-fun generateSnake(height: Int, width: Int): Matrix<Int> {
+fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO() /*{
     val matrix = createMatrix(height, width, 0)
     var cnt = 1
     for (startJ in 0 until width) {
@@ -138,7 +138,7 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> {
         }
     }
     return matrix
-}
+}*/
 
 /**
  * Средняя
@@ -151,7 +151,7 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> {
  * 4 5 6      8 5 2
  * 7 8 9      9 6 3
  */
-fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
+fun <E> rotate(matrix: Matrix<E>): Matrix<E> = TODO() /*{
     if (matrix.height != matrix.width) {
         throw IllegalArgumentException()
     }
@@ -162,7 +162,7 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
         }
     }
     return result
-}
+}*/
 
 /**
  * Сложная
@@ -177,7 +177,7 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
  * 1 2 3
  * 3 1 2
  */
-fun isGoodList(list: MutableList<Int>) : Boolean {
+/*fun isGoodList(list: MutableList<Int>) : Boolean {
     val n : Long = list.size.toLong()
     var sum : Long = 0
     var badList = false
@@ -196,9 +196,9 @@ fun isGoodList(list: MutableList<Int>) : Boolean {
         }
     }
     return true
-}
+}*/
 
-fun isLatinSquare(matrix: Matrix<Int>): Boolean {
+fun isLatinSquare(matrix: Matrix<Int>): Boolean = TODO() /*{
     if (matrix.height != matrix.width) {
         return false
     }
@@ -214,7 +214,7 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean {
         }
     }
     return true
-}
+}*/
 
 /**
  * Средняя
@@ -233,7 +233,7 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean {
  *
  * 42 ===> 0
  */
-fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> {
+fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int>  = TODO() /*{
     val dy = listOf(-1, 0, 1, -1, 1, -1, 0, 1)
     val dx = listOf(-1, -1, -1, 0, 0, 1, 1, 1)
 
@@ -248,7 +248,7 @@ fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> {
         }
     }
     return result
-}
+}*/
 
 /**
  * Средняя
@@ -304,7 +304,20 @@ data class Holes(val rows: List<Int>, val columns: List<Int>)
  *
  * К примеру, центральный элемент 12 = 1 + 2 + 4 + 5, элемент в левом нижнем углу 12 = 1 + 4 + 7 и так далее.
  */
-fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> = TODO()
+fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> {
+    val result = createMatrix(matrix.height, matrix.width, 0)
+    for (i in 0 until matrix.height) {
+        for (j in 0 until matrix.width) {
+            when {
+                i == 0 && j == 0 -> result[i, j] = matrix[i, j]
+                i == 0 -> result[i, j] = result[i, j - 1] + matrix[i, j]
+                j == 0 -> result[i, j] = result[i - 1, j] + matrix[i, j]
+                else -> result[i, j] = result[i, j - 1] + result[i - 1, j] - result[i - 1, j - 1] + matrix[i, j]
+            }
+        }
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -334,7 +347,15 @@ fun canOpenLock(key: Matrix<Int>, lock: Matrix<Int>): Triple<Boolean, Int, Int> 
  * Инвертировать заданную матрицу.
  * При инвертировании знак каждого элемента матрицы следует заменить на обратный
  */
-operator fun Matrix<Int>.unaryMinus(): Matrix<Int> = TODO(this.toString())
+operator fun Matrix<Int>.unaryMinus(): Matrix<Int> {
+    val result = createMatrix(height, width, 0)
+    for (i in 0 until height) {
+        for (j in 0 until width) {
+            result[i, j] = -get(i, j)
+        }
+    }
+    return result
+}
 
 /**
  * Средняя
