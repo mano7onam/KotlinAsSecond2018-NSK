@@ -193,6 +193,7 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
  * Пример: kingMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
+// manhetten distance
 fun kingMoveNumber(start: Square, end: Square): Int = TODO()
 
 /**
