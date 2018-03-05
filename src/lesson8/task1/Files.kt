@@ -53,7 +53,24 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+    for (line in File(inputName).readLines()) {
+        if (line.isEmpty()) {
+            continue
+        }
+        for (word in line.split(" ")) {
+            val w = word.toLowerCase()
+            if (result.containsKey(w)) {
+                result[w] = result[w]!!.plus(1)
+            }
+            else {
+                result[w] = 1
+            }
+        }
+    }
+    return result
+}
 
 
 /**
@@ -69,8 +86,37 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
+fun correctWord(word: String) : String {
+    val before = listOf('Ж', 'Ч', 'Ш', 'Щ')
+    val after = listOf('Ы', 'Я', 'Ю')
+    val replace = mutableMapOf('Ы' to 'И', 'Я' to 'А', 'Ю' to 'У')
+    val res = StringBuilder()
+    res.append(word[0])
+    for (i in 1 until word.length) {
+        if (word[i - 1] in before && word[i] in after) {
+            res.append(replace[word[i]])
+        }
+    }
+    return res.toString()
+}
+
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val outputStream = File(outputName).bufferedWriter()
+    for (line in File(inputName).readLines()) {
+        if (line.isEmpty()) {
+            outputStream.newLine()
+            continue
+        }
+        val words = line.split(" ")
+        for (i in 0 until words.size) {
+            outputStream.write(correctWord(words[i]))
+            if (i != words.size - 1) {
+                outputStream.write(" ")
+            }
+        }
+        outputStream.newLine()
+    }
+    outputStream.close()
 }
 
 /**
@@ -91,7 +137,25 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    val list = mutableListOf<String>()
+    var maxLen = 0
+    for (line in File(inputName).readLines()) {
+        list += line
+        maxLen = Math.max(maxLen, line.length)
+    }
+
+    val outputStream = File(outputName).bufferedWriter()
+    for (line in list) {
+        val sb = StringBuilder()
+        val spaces = (maxLen -line.length) / 2
+        for (i in 0 until spaces) {
+            sb.append(" ")
+        }
+        outputStream.write(sb.toString())
+        outputStream.write(line)
+        outputStream.newLine()
+    }
+    outputStream.close()
 }
 
 /**

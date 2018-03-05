@@ -349,7 +349,7 @@ fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> {
  * Вернуть тройку (Triple) -- (да/нет, требуемый сдвиг по высоте, требуемый сдвиг по ширине).
  * Если наложение невозможно, то первый элемент тройки "нет" и сдвиги могут быть любыми.
  */
-fun canOpenLock(key: Matrix<Int>, lock: Matrix<Int>): Triple<Boolean, Int, Int> {
+    fun canOpenLock(key: Matrix<Int>, lock: Matrix<Int>): Triple<Boolean, Int, Int> {
     for (startI in 0 until lock.height) {
         for (startJ in 0 until lock.width) {
             var can = false
