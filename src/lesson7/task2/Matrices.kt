@@ -151,7 +151,7 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO() /*{
  * 4 5 6      8 5 2
  * 7 8 9      9 6 3
  */
-fun <E> rotate(matrix: Matrix<E>): Matrix<E> = TODO() /*{
+fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
     if (matrix.height != matrix.width) {
         throw IllegalArgumentException()
     }
@@ -162,7 +162,7 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> = TODO() /*{
         }
     }
     return result
-}*/
+}
 
 /**
  * Сложная
@@ -233,7 +233,7 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean = TODO() /*{
  *
  * 42 ===> 0
  */
-fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int>  = TODO() /*{
+fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> {
     val dy = listOf(-1, 0, 1, -1, 1, -1, 0, 1)
     val dx = listOf(-1, -1, -1, 0, 0, 1, 1, 1)
 
@@ -248,7 +248,7 @@ fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int>  = TODO() /*{
         }
     }
     return result
-}*/
+}
 
 /**
  * Средняя
