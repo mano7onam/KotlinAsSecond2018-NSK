@@ -195,12 +195,11 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
  * Пример: kingMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
-// Manhattan distance
 fun kingMoveNumber(start: Square, end: Square): Int {
     if (!start.inside() || !end.inside()) {
         throw IllegalArgumentException()
     }
-    return Math.abs(end.column - start.column) + Math.abs(end.row - start.row)
+    return kingTrajectory(start, end).size - 1
 }
 
 /**
@@ -222,12 +221,18 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
     var cur = start
     val dcs = listOf(-1, 0, 1, -1, 1, -1, 0, 1)
     val drs = listOf(-1, -1, -1, 0, 0, 1, 1, 1)
-    while (cur.column != end.column) {
-        cur = Square(cur.column + dC, cur.row)
-        res += cur
-    }
-    while (cur.row != end.row) {
-        cur = Square(cur.column, cur.row + dR)
+    while (cur.column != end.column || cur.row != end.row) {
+        var best = cur
+        var bestDist = Math.abs(end.column - cur.column) + Math.abs(end.row - cur.row)
+        for (i in 0 until dcs.size) {
+            val next = Square(cur.column + dcs[i], cur.row + drs[i])
+            val nextDist = Math.abs(end.column - next.column) + Math.abs(end.row - next.row)
+            if (next.inside() && nextDist < bestDist) {
+                best = next
+                bestDist = nextDist
+            }
+        }
+        cur = best
         res += cur
     }
     return res
