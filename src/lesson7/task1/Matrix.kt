@@ -50,20 +50,42 @@ class MatrixImpl<E> : Matrix<E> {
 
     override val width: Int = TODO()
 
-    override fun get(row: Int, column: Int): E  = TODO()
+    private var values : MutableList<E>
 
-    override fun get(cell: Cell): E  = TODO()
+    override fun get(row: Int, column: Int): E  {
+        val ind = row * width + column
+        if (ind > values.size) {
+            throw IndexOutOfBoundsException()
+        }
+        return values[ind]
+    }
+
+    override fun get(cell: Cell): E  = get(cell.row, cell.column)
 
     override fun set(row: Int, column: Int, value: E) {
-        TODO()
+        val ind = row * width + column
+        if (ind > values.size) {
+            throw IndexOutOfBoundsException()
+        }
+        values[ind] = value
     }
 
-    override fun set(cell: Cell, value: E) {
-        TODO()
+    override fun set(cell: Cell, value: E) = set(cell.row, cell.column, value)
+
+    override fun equals(other: Any?) : Boolean {
+        return when {
+            this === other -> true
+            this.javaClass != other?.javaClass -> false
+            values == (other as MatrixImpl<*>).values -> true
+            else -> false
+        }
     }
 
-    override fun equals(other: Any?) = TODO()
+    override fun hashCode() : Int = values.hashCode()
 
-    override fun toString(): String = TODO()
+    override fun toString(): String {
+        val sb = StringBuilder()
+        return sb.toString()
+    }
 }
 
