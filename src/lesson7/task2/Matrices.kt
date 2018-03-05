@@ -270,16 +270,20 @@ fun findHoles(matrix: Matrix<Int>): Holes {
     val cs = mutableListOf<Int>()
     for (i in 0 until matrix.height) {
         val listH = mutableListOf<Int>()
-        val listV = mutableListOf<Int>()
         for (j in 0 until matrix.width) {
             listH += matrix[i, j]
-            listV += matrix[j, i]
         }
         if (listH.sum() == 0) {
             rs += i
         }
+    }
+    for (j in 0 until matrix.width) {
+        val listV = mutableListOf<Int>()
+        for (i in 0 until matrix.height) {
+            listV += matrix[i, j]
+        }
         if (listV.sum() == 0) {
-            cs += i
+            rs += j
         }
     }
     return Holes(rs, cs)
