@@ -29,6 +29,8 @@ interface Matrix<E> {
      */
     operator fun set(row: Int, column: Int, value: E)
     operator fun set(cell: Cell, value: E)
+
+    fun havePosition(pos: Cell) : Boolean
 }
 
 /**
@@ -38,19 +40,28 @@ interface Matrix<E> {
  * height = высота, width = ширина, e = чем заполнить элементы.
  * Бросить исключение IllegalArgumentException, если height или width <= 0.
  */
-fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> = TODO()
+fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> = MatrixImpl(height, width, e)
 
 /**
  * Средняя сложность
  *
  * Реализация интерфейса "матрица"
  */
-class MatrixImpl<E> : Matrix<E> {
-    override val height: Int = TODO()
+class MatrixImpl<E> (height: Int, width: Int, e: E) : Matrix<E> {
+    override val height: Int
 
-    override val width: Int = TODO()
+    override val width: Int
 
     private var values : MutableList<E>
+
+    init {
+        if (height <= 0 || width <= 0) {
+            throw IllegalArgumentException()
+        }
+        this.height = height
+        this.width = width
+        values = MutableList(height * width, { ind -> e } )
+    }
 
     override fun get(row: Int, column: Int): E  {
         val ind = row * width + column
@@ -84,8 +95,15 @@ class MatrixImpl<E> : Matrix<E> {
     override fun hashCode() : Int = values.hashCode()
 
     override fun toString(): String {
+        if (width == 0 || height == 0) {
+            return "[[]]"
+        }
         val sb = StringBuilder()
+        // TODO MANO
         return sb.toString()
     }
+
+    override fun havePosition(pos: Cell) : Boolean =
+            (pos.row in 0 until height && pos.column in 0 until width)
 }
 

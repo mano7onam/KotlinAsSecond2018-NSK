@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson7.task2
 
+import lesson7.task1.Cell
 import lesson7.task1.Matrix
 import lesson7.task1.createMatrix
 
@@ -59,7 +60,23 @@ operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
  * 10 11 12  5
  *  9  8  7  6
  */
-fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateSpiral(height: Int, width: Int): Matrix<Int> {
+    val dx = listOf(1, 0, -1, 0)
+    val dy = listOf(0, 1, 0, -1)
+    var cur = Cell(0, 0)
+    var curInd = 0
+    val matrix = createMatrix(height, width, 0)
+    for (i in 1 .. height * width) {
+        matrix[cur] = i
+        var next = Cell(cur.row + dy[curInd], cur.column + dx[curInd])
+        if (!matrix.havePosition(next) || matrix[next] != 0) {
+            curInd = (curInd + 1) % dx.size
+            next = Cell(cur.row + dy[curInd], cur.column + dx[curInd])
+        }
+        cur = next
+    }
+    return matrix
+}
 
 /**
  * Сложная
@@ -75,7 +92,15 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
  *  1  2  2  2  2  1
  *  1  1  1  1  1  1
  */
-fun generateRectangles(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateRectangles(height: Int, width: Int): Matrix<Int> {
+    val matrix = createMatrix(height, width, 0)
+    for (i in 0 until height) {
+        for (j in 0 until width) {
+            matrix[i, j] = Math.min(Math.min(i + 1, j + 1), Math.min(height - i, width - j))
+        }
+    }
+    return matrix
+}
 
 /**
  * Сложная
@@ -90,7 +115,27 @@ fun generateRectangles(height: Int, width: Int): Matrix<Int> = TODO()
  * 10 13 16 18
  * 14 17 19 20
  */
-fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateSnake(height: Int, width: Int): Matrix<Int> {
+    val matrix = createMatrix(height, width, 0)
+    var cnt = 1
+    for (startJ in 0 until width) {
+        var pos = Cell(0, startJ)
+        while (matrix.havePosition(pos)) {
+            matrix[pos] = cnt
+            cnt++
+            pos = Cell(pos.row + 1, pos.column - 1)
+        }
+    }
+    for (startI in 1 until height) {
+        var pos = Cell(startI, matrix.width - 1)
+        while (matrix.havePosition(pos)) {
+            matrix[pos] = cnt
+            cnt++
+            pos = Cell(pos.row + 1, pos.column - 1)
+        }
+    }
+    return matrix
+}
 
 /**
  * Средняя
@@ -103,7 +148,18 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO()
  * 4 5 6      8 5 2
  * 7 8 9      9 6 3
  */
-fun <E> rotate(matrix: Matrix<E>): Matrix<E> = TODO()
+fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
+    if (matrix.height != matrix.width) {
+        throw IllegalArgumentException()
+    }
+    val result = createMatrix(matrix.height, matrix.width, matrix[0, 0])
+    for (i in 0 until matrix.height) {
+        for (j in 0 until matrix.width) {
+            result[i, j] = matrix[matrix.height - j - 1, i]
+        }
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -118,7 +174,44 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> = TODO()
  * 1 2 3
  * 3 1 2
  */
-fun isLatinSquare(matrix: Matrix<Int>): Boolean = TODO()
+fun isGoodList(list: MutableList<Int>) : Boolean {
+    val n : Long = list.size.toLong()
+    var sum : Long = 0
+    var badList = false
+    list.forEach( { el -> sum += el; if (el <= 0 || el > n) badList = true })
+    if (badList || sum != (n * (n + 1L) / 2L)) {
+        return false
+    }
+    for (i in 1 .. n.toInt()) {
+        var cur = list[i - 1]
+        while (cur != i) {
+            var other = list[cur - 1]
+            if (list[other - 1] == other) {
+                return false
+            }
+            cur = other .also { other = cur }
+        }
+    }
+    return true
+}
+
+fun isLatinSquare(matrix: Matrix<Int>): Boolean {
+    if (matrix.height != matrix.width) {
+        return false
+    }
+    for (i in 0 until matrix.height) {
+        val listH = mutableListOf<Int>()
+        val listV = mutableListOf<Int>()
+        for (j in 0 until matrix.width) {
+            listH += matrix[i, j]
+            listV += matrix[j, i]
+        }
+        if (!isGoodList(listV) || !isGoodList(listH)) {
+            return false
+        }
+    }
+    return true
+}
 
 /**
  * Средняя
