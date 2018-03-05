@@ -283,7 +283,7 @@ fun findHoles(matrix: Matrix<Int>): Holes {
             listV += matrix[i, j]
         }
         if (listV.sum() == 0) {
-            rs += j
+            cs += j
         }
     }
     return Holes(rs, cs)
@@ -413,7 +413,44 @@ operator fun Matrix<Int>.times(other: Matrix<Int>): Matrix<Int> {
  * 0  4 13  6
  * 3 10 11  8
  */
-fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> = TODO()
+fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> {
+    var cur = Cell(-1, -1)
+    val result = createMatrix(matrix.height, matrix.width, 0)
+    for (i in 0 until matrix.height) {
+        for (j in 0 until matrix.width) {
+            result[i, j] = matrix[i, j]
+            if (matrix[i, j] == 0) {
+                cur = Cell(i, j)
+            }
+        }
+    }
+
+
+    val dy = listOf(0, 1, 0, -1)
+    val dx = listOf(-1, 0, 1, 0)
+    for (i in 0 until moves.size) {
+        val num = moves[i]
+        if (num !in 1..15) {
+            throw IllegalStateException()
+        }
+        var wasStep = false
+        for (k in 0 until dx.size) {
+            val next = Cell(cur.row + dy[k], cur.column + dx[k])
+            if (havePosition(result, next) && result[next] == num) {
+                result[cur] = result[next]
+                result[next] = 0
+                cur = next
+                wasStep = true
+                break
+            }
+        }
+        if (!wasStep) {
+            throw IllegalStateException()
+        }
+    }
+
+    return result
+}
 
 /**
  * Очень сложная
