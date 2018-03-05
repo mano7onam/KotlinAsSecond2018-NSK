@@ -335,7 +335,8 @@ fun mccList(ps: List<Point>) : Circle {
 }
 
 fun minContainingCircle(vararg points: Point): Circle {
-    return Circle(Point(0.0, 0.0), 1.0)
+    val listPoints = points.toMutableList()
+    return mccList(listPoints)
 }
 
 
