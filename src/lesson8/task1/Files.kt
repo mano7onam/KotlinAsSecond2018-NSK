@@ -53,14 +53,34 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
+
+fun getWordsFromLine(line: String) : MutableList<String> {
+    val result = mutableListOf<String>()
+    var curWord = ""
+    for (i in 0 until line.length) {
+        if (line[i].isLetter()) {
+            curWord += line[i].toLowerCase()
+        }
+        else {
+            if (!curWord.isEmpty()) {
+                result += curWord
+            }
+            curWord = ""
+        }
+    }
+    if (!curWord.isEmpty()) {
+        result += curWord
+    }
+    return result
+}
+
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val result = mutableMapOf<String, Int>()
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
             continue
         }
-        for (word in line.split(" ")) {
-            val w = word.toLowerCase()
+        for (w in getWordsFromLine(line)) {
             if (result.containsKey(w)) {
                 result[w] = result[w]!!.plus(1)
             }
@@ -87,6 +107,9 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun correctWord(word: String) : String {
+    if (word.isEmpty()) {
+        return ""
+    }
     val before = listOf('Ж', 'Ч', 'Ш', 'Щ')
     val after = listOf('Ы', 'Я', 'Ю')
     val replace = mutableMapOf('Ы' to 'И', 'Я' to 'А', 'Ю' to 'У')
@@ -107,13 +130,11 @@ fun sibilants(inputName: String, outputName: String) {
             outputStream.newLine()
             continue
         }
-        val words = line.split(" ")
-        for (i in 0 until words.size) {
-            outputStream.write(correctWord(words[i]))
-            if (i != words.size - 1) {
-                outputStream.write(" ")
-            }
+        val outputList = mutableListOf<String>()
+        for (w in getWordsFromLine(line)) {
+            outputList += correctWord(w)
         }
+        outputStream.write(outputList.joinToString(separator = " "))
         outputStream.newLine()
     }
     outputStream.close()
