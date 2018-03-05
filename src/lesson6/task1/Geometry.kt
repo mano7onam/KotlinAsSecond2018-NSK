@@ -296,7 +296,7 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
  * соединяющий две самые удалённые точки в данном множестве.
  */
 
-fun mccListPointPoint(ps: List<Point>, p1 : Point, p2 : Point) : Circle {
+fun mccListPointPoint(ps: MutableList<Point>, p1 : Point, p2 : Point) : Circle {
     var curCircle = circleByDiameter(Segment(p1, p2))
     ps.forEach { p ->
         if (!curCircle.contains(p)) {
@@ -306,10 +306,10 @@ fun mccListPointPoint(ps: List<Point>, p1 : Point, p2 : Point) : Circle {
     return curCircle
 }
 
-fun mccListPoint(ps: List<Point>, p1 : Point) : Circle {
+fun mccListPoint(ps: MutableList<Point>, p1 : Point) : Circle {
     Collections.shuffle(ps)
     var curCircle = circleByDiameter(Segment(p1, ps[0]))
-    val listFirstPs = arrayListOf<Point>()
+    val listFirstPs = mutableListOf<Point>()
     ps.forEach { p ->
         if (!curCircle.contains(p)) {
             curCircle = mccListPointPoint(listFirstPs, p, p1)
@@ -319,10 +319,10 @@ fun mccListPoint(ps: List<Point>, p1 : Point) : Circle {
     return curCircle
 }
 
-fun mccList(ps: List<Point>) : Circle {
+fun mccList(ps: MutableList<Point>) : Circle {
     Collections.shuffle(ps)
     var curCircle = circleByDiameter(Segment(ps[0], ps[1]))
-    val listFirstPs = arrayListOf<Point>()
+    val listFirstPs = mutableListOf<Point>()
     listFirstPs.add(ps[0])
     listFirstPs.add(ps[1])
     ps.forEach { p ->
