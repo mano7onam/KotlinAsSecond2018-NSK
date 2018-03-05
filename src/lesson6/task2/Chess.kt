@@ -121,7 +121,16 @@ fun rookTrajectory(start: Square, end: Square): List<Square> {
  * Примеры: bishopMoveNumber(Square(3, 1), Square(6, 3)) = -1; bishopMoveNumber(Square(3, 1), Square(3, 7)) = 2.
  * Слон может пройти через клетку (6, 4) к клетке (3, 7).
  */
-fun bishopMoveNumber(start: Square, end: Square): Int = TODO()
+fun bishopMoveNumber(start: Square, end: Square): Int {
+    return when {
+        (!start.inside() || !end.inside()) -> throw IllegalArgumentException()
+        ((start.column + start.row) % 2 != (end.column + end.row) % 2) -> -1
+        start == end -> 0
+        start.column + start.row == end.column + end.row -> 1
+        start.column - start.row == end.column - end.row -> 1
+        else -> 2
+    }
+}
 
 /**
  * Сложная
@@ -141,7 +150,28 @@ fun bishopMoveNumber(start: Square, end: Square): Int = TODO()
  *          bishopTrajectory(Square(1, 3), Square(6, 8)) = listOf(Square(1, 3), Square(6, 8))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun bishopTrajectory(start: Square, end: Square): List<Square> {
+    return when (bishopMoveNumber(start, end)) {
+        -1 -> listOf()
+        0 -> listOf(start)
+        1 -> listOf(start, end)
+        else -> {
+            val sum1 = start.column + start.row
+            val sum2 = end.column + end.row
+            val mvs = (sum2 - sum1) / 2
+            val sqSum = Square(start.column + mvs, start.row + mvs)
+            if (sqSum.inside()) {
+                return listOf(start, sqSum, end)
+            }
+
+            val diff1 = start.column - start.row
+            val diff2 = end.column - end.row
+            val mvd = (diff2 - diff1) / 2
+            val sqDiff = Square(start.column + mvd, start.row - mvd)
+            return listOf(start, sqDiff, end)
+        }
+    }
+}
 
 /**
  * Средняя
