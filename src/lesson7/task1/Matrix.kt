@@ -30,7 +30,7 @@ interface Matrix<E> {
     operator fun set(row: Int, column: Int, value: E)
     operator fun set(cell: Cell, value: E)
 
-    fun havePosition(pos: Cell) : Boolean
+    /*fun havePosition(pos: Cell) : Boolean*/
 }
 
 /**
@@ -103,7 +103,7 @@ class MatrixImpl<E> (height: Int, width: Int, e: E) : Matrix<E> {
         return sb.toString()
     }
 
-    override fun havePosition(pos: Cell) : Boolean =
-            (pos.row in 0 until height && pos.column in 0 until width)
+    /*override fun havePosition(pos: Cell) : Boolean =
+            (pos.row in 0 until height && pos.column in 0 until width)*/
 }
 

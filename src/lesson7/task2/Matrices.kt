@@ -7,6 +7,9 @@ import lesson7.task1.createMatrix
 
 // Все задачи в этом файле требуют наличия реализации интерфейса "Матрица" в Matrix.kt
 
+fun <E> havePosition(matrix: Matrix<E>, pos: Cell) : Boolean =
+        pos.row in 0 until matrix.height && pos.column in 0 until matrix.width
+
 /**
  * Пример
  *
@@ -69,7 +72,7 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> {
     for (i in 1 .. height * width) {
         matrix[cur] = i
         var next = Cell(cur.row + dy[curInd], cur.column + dx[curInd])
-        if (!matrix.havePosition(next) || matrix[next] != 0) {
+        if (!havePosition(matrix, next) || matrix[next] != 0) {
             curInd = (curInd + 1) % dx.size
             next = Cell(cur.row + dy[curInd], cur.column + dx[curInd])
         }
@@ -120,7 +123,7 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> {
     var cnt = 1
     for (startJ in 0 until width) {
         var pos = Cell(0, startJ)
-        while (matrix.havePosition(pos)) {
+        while (havePosition(matrix, pos)) {
             matrix[pos] = cnt
             cnt++
             pos = Cell(pos.row + 1, pos.column - 1)
@@ -128,7 +131,7 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> {
     }
     for (startI in 1 until height) {
         var pos = Cell(startI, matrix.width - 1)
-        while (matrix.havePosition(pos)) {
+        while (havePosition(matrix, pos)) {
             matrix[pos] = cnt
             cnt++
             pos = Cell(pos.row + 1, pos.column - 1)
@@ -230,7 +233,22 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean {
  *
  * 42 ===> 0
  */
-fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> = TODO()
+fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> {
+    val dy = listOf(-1, 0, 1, -1, 1, -1, 0, 1)
+    val dx = listOf(-1, -1, -1, 0, 0, 1, 1, 1)
+
+    val result = createMatrix(matrix.height, matrix.width, 0)
+    for (i in 0 until matrix.height) {
+        for (j in 0 until matrix.width) {
+            for (k in 0 until dx.size) {
+                if (havePosition(result, Cell(i + dy[k], j + dx[k]))) {
+                    result[i, j] += matrix[i + dy[k], j + dx[k]]
+                }
+            }
+        }
+    }
+    return result
+}
 
 /**
  * Средняя
@@ -247,7 +265,25 @@ fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> = TODO()
  * 0 0 1 0
  * 0 0 0 0
  */
-fun findHoles(matrix: Matrix<Int>): Holes = TODO()
+fun findHoles(matrix: Matrix<Int>): Holes {
+    val rs = mutableListOf<Int>()
+    val cs = mutableListOf<Int>()
+    for (i in 0 until matrix.height) {
+        val listH = mutableListOf<Int>()
+        val listV = mutableListOf<Int>()
+        for (j in 0 until matrix.width) {
+            listH += matrix[i, j]
+            listV += matrix[j, i]
+        }
+        if (listH.sum() == 0) {
+            rs += i
+        }
+        if (listV.sum() == 0) {
+            cs += i
+        }
+    }
+    return Holes(rs, cs)
+}
 
 /**
  * Класс для описания местонахождения "дырок" в матрице
