@@ -1,6 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson6.task2
 
+import java.util.*
+
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
  * Поэтому, обе координаты клетки (горизонталь row, вертикаль column) могут находиться в пределах от 1 до 8.
@@ -193,8 +195,13 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> {
  * Пример: kingMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
-// manhetten distance
-fun kingMoveNumber(start: Square, end: Square): Int = TODO()
+// Manhattan distance
+fun kingMoveNumber(start: Square, end: Square): Int {
+    if (!start.inside() || !end.inside()) {
+        throw IllegalArgumentException()
+    }
+    return Math.abs(end.column - start.column) + Math.abs(end.row - start.row)
+}
 
 /**
  * Сложная
@@ -210,7 +217,21 @@ fun kingMoveNumber(start: Square, end: Square): Int = TODO()
  *          kingTrajectory(Square(3, 5), Square(6, 2)) = listOf(Square(3, 5), Square(4, 4), Square(5, 3), Square(6, 2))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun kingTrajectory(start: Square, end: Square): List<Square> {
+    var res = listOf(start)
+    var cur = start
+    val dcs = listOf(-1, 0, 1, -1, 1, -1, 0, 1)
+    val drs = listOf(-1, -1, -1, 0, 0, 1, 1, 1)
+    while (cur.column != end.column) {
+        cur = Square(cur.column + dC, cur.row)
+        res += cur
+    }
+    while (cur.row != end.row) {
+        cur = Square(cur.column, cur.row + dR)
+        res += cur
+    }
+    return res
+}
 
 /**
  * Сложная
@@ -235,7 +256,7 @@ fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Пример: knightMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
  */
-fun knightMoveNumber(start: Square, end: Square): Int = TODO()
+fun knightMoveNumber(start: Square, end: Square): Int = knightTrajectory(start, end).size - 1
 
 /**
  * Очень сложная
@@ -257,4 +278,40 @@ fun knightMoveNumber(start: Square, end: Square): Int = TODO()
  *
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun knightTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun knightTrajectory(start: Square, end: Square): List<Square> {
+    if (!start.inside() || !end.inside()) {
+        throw IllegalArgumentException()
+    }
+
+    val dcs = listOf(1, 1, 2, 2, -1, -1, -2, -2)
+    val drs = listOf(2, -2, 1, -1, 2, -2, 1, -1)
+
+    val queue = ArrayDeque<Square>()
+    queue.add(start)
+    val visited = mutableMapOf(start to 0)
+    val parent = mutableMapOf(start to Square(-1, -1))
+    while (queue.isNotEmpty()) {
+        val cur = queue.poll()
+        val distance = visited[cur]!!
+        if (cur == end) break
+        for (i in 0 until dcs.size) {
+            val dc = dcs[i]
+            val dr = drs[i]
+            val to = Square(cur.column + dc, cur.row + dr)
+            if (!to.inside() || visited.containsKey(to)) {
+                continue
+            }
+            visited.put(to, distance + 1)
+            parent.put(to, cur)
+            queue.add(to)
+        }
+    }
+
+    var cur = end
+    var res = listOf<Square>()
+    while (cur.inside()) {
+        res += cur
+        cur = parent[cur]!!
+    }
+    return res.reversed()
+}
