@@ -177,7 +177,7 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
  * 1 2 3
  * 3 1 2
  */
-/*fun isGoodList(list: MutableList<Int>) : Boolean {
+fun isGoodList(list: MutableList<Int>) : Boolean {
     val n : Long = list.size.toLong()
     var sum : Long = 0
     var badList = false
@@ -187,8 +187,14 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
     }
     for (i in 1 .. n.toInt()) {
         var cur = list[i - 1]
+        if (cur !in 1..n) {
+            return false
+        }
         while (cur != i) {
             var other = list[cur - 1]
+            if (other !in 1..n) {
+                return false
+            }
             if (list[other - 1] == other) {
                 return false
             }
@@ -196,9 +202,9 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
         }
     }
     return true
-}*/
+}
 
-fun isLatinSquare(matrix: Matrix<Int>): Boolean = TODO() /*{
+fun isLatinSquare(matrix: Matrix<Int>): Boolean {
     if (matrix.height != matrix.width) {
         return false
     }
@@ -214,7 +220,7 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean = TODO() /*{
         }
     }
     return true
-}*/
+}
 
 /**
  * Средняя
