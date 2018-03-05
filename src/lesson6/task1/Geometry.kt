@@ -220,13 +220,14 @@ fun lineBySegment(s: Segment): Line = lineByPoints(s.begin, s.end)
  * Построить прямую по двум точкам
  */
 fun lineByPoints(a: Point, b: Point): Line {
+    val eps = 1e-10
     val dir = (b - a).getNormalized()
-    var ang = Math.atan2(dir.y, dir.x)
-    if (ang < 0) {
-        ang = Math.PI - ang
+    if (Math.abs(dir.x) < eps) {
+        return Line(a, Math.PI / 2.0)
     }
-    if (ang > Math.PI) {
-        ang -= Math.PI
+    var ang = Math.atan(dir.y / dir.x)
+    if (ang < 0) {
+        ang += Math.PI
     }
     return Line(a, ang)
 }
@@ -277,20 +278,11 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()/* {
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
     val center = bisectorByPoints(a, b).crossPoint(bisectorByPoints(b, c))
     val radius = (center - a).lenVect()
     return Circle(center, radius)
-    // it was unreal hard
-}*/
-
-/*fun main(args: Array<String>) {
-    val a = Point(0.0, 0.0)
-    val b = Point(1.0, 0.0)
-    val c = Point(0.0, 1.0)
-    val cir = circleByThreePoints(a, b, c)
-    println("Result: $cir")
-}*/
+}
 
 /**
  * Очень сложная
