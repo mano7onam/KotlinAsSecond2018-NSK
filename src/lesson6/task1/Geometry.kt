@@ -296,7 +296,7 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
  * соединяющий две самые удалённые точки в данном множестве.
  */
 
-/*fun mccListPointPoint(ps: List<Point>, p1 : Point, p2 : Point) : Circle {
+fun mccListPointPoint(ps: List<Point>, p1 : Point, p2 : Point) : Circle {
     var curCircle = circleByDiameter(Segment(p1, p2))
     ps.forEach { p ->
         if (!curCircle.contains(p)) {
@@ -332,8 +332,8 @@ fun mccList(ps: List<Point>) : Circle {
         listFirstPs.add(p)
     }
     return curCircle
-}*/
+}
 
-fun minContainingCircle(vararg points: Point): Circle = /*mccList(points.toList())*/ TODO()
+fun minContainingCircle(vararg points: Point): Circle = mccList(points.toList())
 
 
