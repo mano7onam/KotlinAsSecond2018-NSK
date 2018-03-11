@@ -255,7 +255,7 @@ fun firstDuplicateIndex(str: String): Int {
 fun mostExpensive(description: String): String {
     val arr = description.split("; ")
     var maxEl = ""
-    var maxPr = 0.0
+    var maxPr = -0.12345
     for (arrI in arr) {
         val elPr = arrI.split(" ")
         when {
