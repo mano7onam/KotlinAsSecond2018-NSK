@@ -88,7 +88,7 @@ fun monthToNumStr(month : String) : String {
 fun numStrToMonth(month : String) : String {
     return when (month) {
         "01" -> "января"
-        "02" -> "февряля"
+        "02" -> "февраля"
         "03" -> "марта"
         "04" -> "апреля"
         "05" -> "мая"
@@ -233,7 +233,7 @@ fun firstDuplicateIndex(str: String): Int {
     var pos = 0
     val arr = str.split(" ")
     for (i in 0 until arr.size - 1) {
-        if (arr[i] == arr[i + 1]) {
+        if (arr[i].toLowerCase() == arr[i + 1].toLowerCase()) {
             return pos
         }
         pos += arr[i].length + 1
@@ -252,7 +252,27 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть положительными
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    val arr = description.split("; ")
+    var maxEl = ""
+    var maxPr = 0.0
+    for (arrI in arr) {
+        val elPr = arrI.split(" ")
+        when {
+            elPr.size != 2 -> return ""
+            elPr[1].toDoubleOrNull() == null -> return ""
+            else -> {
+                val el = elPr[0]
+                val pr = elPr[1].toDouble()
+                if (pr > maxPr) {
+                    maxEl = el
+                    maxPr = pr
+                }
+            }
+        }
+    }
+    return maxEl
+}
 
 /**
  * Сложная
