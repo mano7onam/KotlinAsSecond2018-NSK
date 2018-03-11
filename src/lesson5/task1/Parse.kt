@@ -112,7 +112,13 @@ fun eraseLeadingZeros(num : String) : String =
 
 fun dateStrToDigit(str: String): String {
     val parts = str.split(' ')
-    return numStrToTwoDigits(parts[0]) + "." + monthToNumStr(parts[1]) + "." + parts[2]
+    return when {
+        parts.size != 3 -> ""
+        !parts[0].matches(Regex("^(0?[1-9]|[12][0-9]|3[01])$")) -> ""
+        !parts[2].matches(Regex("^\\d{4}$")) -> ""
+        monthToNumStr(parts[1]) == "" -> ""
+        else -> twoDigitStr(parts[0].toInt()) + "." + monthToNumStr(parts[1]) + "." + parts[2]
+    }
 }
 
 /**
@@ -124,7 +130,13 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     val parts = digital.split('.')
-    return eraseLeadingZeros(parts[0]) + " " + numStrToMonth(parts[1]) + " " + parts[2]
+    return when {
+        parts.size != 3 -> ""
+        !parts[0].matches(Regex("^(0?[1-9]|[12][0-9]|3[01])$")) -> ""
+        !parts[2].matches(Regex("^\\d{4}$")) -> ""
+        numStrToMonth(parts[1]) == "" -> ""
+        else -> eraseLeadingZeros(parts[0]) + " " + numStrToMonth(parts[1]) + " " + parts[2]
+    }
 }
 
 /**
