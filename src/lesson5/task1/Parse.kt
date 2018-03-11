@@ -151,10 +151,15 @@ fun dateDigitToStr(digital: String): String {
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String =
-        if (phone.matches(Regex("todo")))
-            phone.replace("-", "").replace(" ", "")
-        else ""
+fun flattenPhoneNumber(phone: String): String {
+    val symbs = listOf('-', '(', ')', ' ')
+    val sb = StringBuilder()
+    phone.forEach { c -> when {
+        (c !in symbs && !c.isDigit() && c != '+') -> return ""
+        (c !in symbs) -> sb.append(c)
+    } }
+    return sb.toString()
+}
 
 /**
  * Средняя
