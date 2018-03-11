@@ -70,7 +70,7 @@ fun main(args: Array<String>) {
 fun monthToNumStr(month : String) : String {
     return when (month) {
         "января" -> "01"
-        "февряля" -> "02"
+        "февраля" -> "02"
         "марта" -> "03"
         "апреля" -> "04"
         "мая" -> "05"
@@ -202,7 +202,23 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val ops = listOf("+", "-")
+    var sgn = 1
+    var res = 0
+    val arr = expression.split(" ")
+    var type = 0
+    for (el in arr) {
+        when {
+            type == 0 && el.toIntOrNull() == null -> throw IllegalArgumentException()
+            type == 1 && el !in ops -> throw IllegalArgumentException()
+            type == 0 -> res += sgn * el.toInt()
+            type == 1 -> sgn = if (el == "+") 1 else -1
+        }
+        type = 1 - type
+    }
+    return res
+}
 
 /**
  * Сложная
@@ -213,7 +229,17 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    var pos = 0
+    val arr = str.split(" ")
+    for (i in 0 until arr.size - 1) {
+        if (arr[i] == arr[i + 1]) {
+            return pos
+        }
+        pos += arr[i].length + 1
+    }
+    return -1
+}
 
 /**
  * Сложная
