@@ -115,7 +115,7 @@ fun dateStrToDigit(str: String): String {
     return when {
         parts.size != 3 -> ""
         !parts[0].matches(Regex("^(0?[1-9]|[12][0-9]|3[01])$")) -> ""
-        !parts[2].matches(Regex("^\\d{4}$")) -> ""
+        !parts[2].matches(Regex("^\\d+$")) -> ""
         monthToNumStr(parts[1]) == "" -> ""
         else -> twoDigitStr(parts[0].toInt()) + "." + monthToNumStr(parts[1]) + "." + parts[2]
     }
@@ -133,7 +133,7 @@ fun dateDigitToStr(digital: String): String {
     return when {
         parts.size != 3 -> ""
         !parts[0].matches(Regex("^(0?[1-9]|[12][0-9]|3[01])$")) -> ""
-        !parts[2].matches(Regex("^\\d{4}$")) -> ""
+        !parts[2].matches(Regex("^\\d+$")) -> ""
         numStrToMonth(parts[1]) == "" -> ""
         else -> eraseLeadingZeros(parts[0]) + " " + numStrToMonth(parts[1]) + " " + parts[2]
     }
@@ -172,11 +172,13 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    if (!jumps.matches(Regex("todo"))) {
-        return -1
-    }
-    //val parts = jumps.split(" ")
-    return 0
+    var ans = 0
+    jumps.split(" ", "-", "%").forEach { el -> when {
+        el == "" -> Math.max(ans, 0)
+        el.toIntOrNull() == null -> return -1
+        else -> ans = Math.max(ans, el.toInt())
+    } }
+    return ans
 }
 
 /**
