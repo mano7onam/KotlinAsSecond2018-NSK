@@ -21,7 +21,7 @@ fun factorial(n: Int): Double {
  */
 fun isPrime(n: Int): Boolean {
     if (n < 2) return false
-    for (m in 2..Math.sqrt(n.toDouble()).toInt()) {
+    for (m in 2 .. Math.sqrt(n.toDouble()).toInt()) {
         if (n % m == 0) return false
     }
     return true
@@ -34,7 +34,7 @@ fun isPrime(n: Int): Boolean {
  */
 fun isPerfect(n: Int): Boolean {
     var sum = 1
-    for (m in 2..n/2) {
+    for (m in 2 .. n / 2) {
         if (n % m > 0) continue
         sum += m
         if (sum > n) break
@@ -120,7 +120,7 @@ fun lcm(m: Int, n: Int) : Int {
  */
 fun minDivisor(n: Int): Int {
     if (n < 2) return n
-    for (m in 2..Math.sqrt(n.toDouble()).toInt()) {
+    for (m in 2 .. Math.sqrt(n.toDouble()).toInt()) {
         if (n % m == 0) return m
     }
     return n
@@ -131,12 +131,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    for (m in 2..Math.sqrt(n.toDouble()).toInt()) {
-        if (n % m == 0) return n / m
-    }
-    return 1
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -154,23 +149,16 @@ fun isCoPrime(m: Int, n: Int): Boolean = (gcd(m, n) == 1)
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
+fun doubleIsInt(num: Double) : Boolean {
+    val eps = 1e-9
+    return Math.abs(num - num.toInt()) < eps
+}
+
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    if (m < 0 && n < 0) {
-        return false
-    }
-    if (m <= 0 && n >= 0) {
-        return true
-    }
-
-    var num = 1L
-    while (num * num <= n) {
-        if (num * num >= m) {
-            return true
-        }
-        num++
-    }
-
-    return false
+    val eps = 1e-9
+    val left = Math.sqrt(m.toDouble() - eps)
+    val right = Math.sqrt(n.toDouble() + eps)
+    return doubleIsInt(left) || doubleIsInt(right) || right.toInt() - left.toInt() > 0
 }
 
 fun main(args: Array<String>) {
@@ -307,7 +295,7 @@ fun getFirstNumWithSqrLen(len : Int) : Int {
     return r
 }
 
-fun getDigitInNumber(n : Int, ind: Int) : Int = (n.toString()[ind].toString()).toInt()
+fun getDigitInNumber(n : Int, ind: Int) : Int = (n.toString()[ind] - '0')
 
 fun squareSequenceDigit(n: Int): Int {
     val first = "149162536496481100121144"
@@ -318,7 +306,7 @@ fun squareSequenceDigit(n: Int): Int {
     var allLen = 0
     var lastNum = 0
     var rest = 0
-    for (curLen in 1..n) {
+    for (curLen in 1 .. n) {
         val l = getFirstNumWithSqrLen(curLen)
         val r = getFirstNumWithSqrLen(curLen + 1) - 1
         val cut = (r - l + 1) * curLen
