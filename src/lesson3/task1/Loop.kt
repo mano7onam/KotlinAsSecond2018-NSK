@@ -155,6 +155,9 @@ fun doubleIsInt(num: Double) : Boolean {
 }
 
 fun squareBetweenExists(m: Int, n: Int): Boolean {
+    if (m == 0) {
+        return true
+    }
     val eps = 1e-9
     val left = Math.sqrt(m.toDouble() - eps)
     val right = Math.sqrt(n.toDouble() + eps)
