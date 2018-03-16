@@ -35,13 +35,13 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String {
     val ageStr = age.toString()
-    if (age % 100 in 5..20 || age % 10 == 0 || age % 10 >= 5) {
-        return ageStr + " лет"
+    return when {
+        age % 100 in 5..20 -> "$ageStr лет"
+        age % 10 == 0 -> "$ageStr лет"
+        age % 10 >= 5 -> "$ageStr лет"
+        (age % 10 == 1) -> "$ageStr год"
+        else -> "$ageStr года"
     }
-    if (age % 10 == 1) {
-        return ageStr + " год"
-    }
-    return ageStr + " года"
 }
 
 /**
@@ -58,13 +58,11 @@ fun timeForHalfWay(t1: Double, v1: Double,
     val l2 = t2 * v2
     val l3 = t3 * v3
     val halfLen = (l1 + l2 + l3) / 2.0
-    if (halfLen <= l1) {
-        return halfLen / v1
+    return when {
+        halfLen <= l1 -> halfLen / v1
+        halfLen <= l1 + l2 -> t1 + (halfLen - l1) / v2
+        else -> t1 + t2 + (halfLen - l1 - l2) / v3
     }
-    if (halfLen <= l1 + l2) {
-        return t1 + (halfLen - l1) / v2
-    }
-    return t1 + t2 + (halfLen - l1 - l2) / v3
 }
 
 /**
@@ -125,27 +123,14 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
         return -1
     }
 
-    val eps = 1e-10
-    var ta = a * a
-    var tb = b * b
-    var tc = c * c
-    if (ta > tb) {
-        ta = tb.also { tb = ta }
-    }
-    if (tb > tc) {
-        tb = tc.also { tc = tb }
-    }
-    if (ta > tb) {
-        ta = tb.also { tb = ta }
-    }
+    val (ta, tb, tc) = listOf(a * a, b * b, c * c).sorted()
 
-    if (tc < ta + tb - eps) {
-        return 0
+    val eps = 1e-10
+    return when {
+        tc < ta + tb - eps -> 0
+        tc > ta + tb + eps -> 2
+        else -> 1
     }
-    if (tc > ta + tb + eps) {
-        return 2
-    }
-    return 1
 }
 
 /**
