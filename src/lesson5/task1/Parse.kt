@@ -203,17 +203,16 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    val ops = listOf("+", "-")
     var sgn = 1
     var res = 0
     val arr = expression.split(" ")
     var type = 0
     for (el in arr) {
         when {
-            type == 0 && el.toIntOrNull() == null -> throw IllegalArgumentException()
-            type == 1 && el !in ops -> throw IllegalArgumentException()
-            type == 0 -> res += sgn * el.toInt()
-            type == 1 -> sgn = if (el == "+") 1 else -1
+            type == 0 && el.toIntOrNull() != null -> res += sgn * el.toInt()
+            type == 1 && el == "+" -> sgn = 1
+            type == 1 && el == "-" -> sgn = -1
+            else -> throw IllegalArgumentException()
         }
         type = 1 - type
     }
