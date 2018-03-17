@@ -8,7 +8,7 @@ import lesson7.task1.createMatrix
 // Все задачи в этом файле требуют наличия реализации интерфейса "Матрица" в Matrix.kt
 
 fun <E> Matrix<E>.havePosition(pos: Cell) : Boolean =
-        pos.row in (0 until width) && pos.column in (0 until height)
+        pos.row in (0 until height) && pos.column in (0 until width)
 
 /**
  * Пример
@@ -72,7 +72,7 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> {
     for (i in 1 .. height * width) {
         matrix[cur] = i
         var next = Cell(cur.row + dy[curInd], cur.column + dx[curInd])
-        if (matrix.havePosition(next) && matrix[next] != 0) {
+        if (!matrix.havePosition(next) || matrix[next] != 0) {
             curInd = (curInd + 1) % dx.size
             next = Cell(cur.row + dy[curInd], cur.column + dx[curInd])
         }
@@ -182,14 +182,18 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean {
     if (matrix.height != matrix.width) {
         return false
     }
+    val n = matrix.height
     for (i in 0 until matrix.height) {
         val setH = hashSetOf<Int>()
         val setV = hashSetOf<Int>()
-        for (j in 0 until matrix.width) {
+        for (j in 0 until n) {
+            if (matrix[i, j] !in 1 .. n || matrix[j, i] !in 1 .. n) {
+                return false
+            }
             setH.add(matrix[i, j])
             setV.add(matrix[j, i])
         }
-        if (setH.size != matrix.width || setV.size != matrix.width) {
+        if (setH.size != n || setV.size != n) {
             return false
         }
     }
