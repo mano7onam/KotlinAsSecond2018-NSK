@@ -114,7 +114,8 @@ fun abs(v: List<Double>): Double = Math.sqrt((v.map {it * it}).sum())
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = (list.map { it }).sum() / list.size
+fun mean(list: List<Double>): Double =
+        if (list.isEmpty()) 0.0 else (list.map { it }).sum() / list.size
 
 /**
  * Средняя
