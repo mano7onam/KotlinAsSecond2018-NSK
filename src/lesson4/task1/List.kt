@@ -114,7 +114,7 @@ fun abs(v: List<Double>): Double = Math.sqrt((v.map {it * it}).sum())
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = (list.map { it / list.size.toDouble() }).sum()
+fun mean(list: List<Double>): Double = (list.map { it }).sum() / list.size
 
 /**
  * Средняя
@@ -126,7 +126,10 @@ fun mean(list: List<Double>): Double = (list.map { it / list.size.toDouble() }).
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
     val mid = mean(list)
-    return list.apply { forEachIndexed { ind,  el -> list[ind] -= mid } }
+    for (i in 0 until list.size) {
+        list[i] -= mid
+    }
+    return list
 }
 
 /**
@@ -249,10 +252,8 @@ fun convertToString(n: Int, base: Int): String =
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int {
-    var cur = 1
-    return (digits.reversed().map { val last = cur; cur *= base; last * it }).sum()
-}
+fun decimal(digits: List<Int>, base: Int): Int =
+        digits.fold(0) { res, cur -> res * base + cur }
 
 /**
  * Сложная
@@ -264,7 +265,7 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    return str.toCharArray().fold(0) { sum, symb ->
+    return str.fold(0) { sum, symb ->
         if (symb.isDigit())
             sum * base + (symb - '0')
         else
@@ -282,14 +283,15 @@ fun decimalFromString(str: String, base: Int): Int {
  */
 fun roman(n: Int): String {
     var num = n
-    val arrStr = listOf("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M").reversed()
-    val arrNum = listOf(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000).reversed()
+    val arr = listOf("I" to 1, "IV" to 4, "V" to 5, "IX" to 9, "X" to 10,
+            "XL" to 40, "L" to 50, "XC" to 90, "C" to 100,
+            "CD" to 400, "D" to 500, "CM" to 900, "M" to 1000).reversed()
     var ind = 0
     val ans = arrayListOf<String>()
     while (num > 0) {
-        while (num > 0 && num >= arrNum[ind]) {
-            num -= arrNum[ind]
-            ans.add(arrStr[ind])
+        while (num > 0 && num >= arr[ind].second) {
+            num -= arr[ind].second
+            ans.add(arr[ind].first)
         }
         ind++
     }
