@@ -131,10 +131,13 @@ fun diameter(vararg points: Point): Segment {
     }
 
     var res = Segment(points[0], points[1])
-    points.forEach { p1 -> points.forEach { p2 ->
-        if (p1.distance(p2) > res.begin.distance(res.end))
-            res = Segment(p1, p2)
-    } }
+    for (i in 0 until points.size) {
+        for (j in i + 1 until points.size) {
+            if (points[i].distance(points[j]) > res.begin.distance(res.end)) {
+                res = Segment(points[i], points[j])
+            }
+        }
+    }
 
     return res
 }
@@ -256,15 +259,15 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
 
     var res = Pair(circles[0], circles[1])
     var maxDist = res.first.distance(res.second)
-    circles.forEachIndexed { ind1, c1 -> circles.forEachIndexed { ind2, c2 ->
-        if (ind1 != ind2) {
-            val curDist = c1.distance(c2)
-            if (c1.distance(c2) < maxDist) {
+    for (i in 0 until circles.size) {
+        for (j in i + 1 until circles.size) {
+            val curDist = circles[i].distance(circles[j])
+            if (circles[i].distance(circles[j]) < maxDist) {
                 maxDist = curDist
-                res = Pair(c1, c2)
+                res = Pair(circles[i], circles[j])
             }
         }
-    } }
+    }
 
     return res
 }
