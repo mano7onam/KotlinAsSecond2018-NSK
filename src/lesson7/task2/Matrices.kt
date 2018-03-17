@@ -7,8 +7,8 @@ import lesson7.task1.createMatrix
 
 // Все задачи в этом файле требуют наличия реализации интерфейса "Матрица" в Matrix.kt
 
-fun <E> havePosition(matrix: Matrix<E>, pos: Cell) : Boolean =
-        pos.row in 0 until matrix.height && pos.column in 0 until matrix.width
+fun <E> Matrix<E>.havePosition(pos: Cell) : Boolean =
+        pos.row in 0 until height && pos.column in 0 until width
 
 /**
  * Пример
@@ -72,7 +72,7 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> {
     for (i in 1 .. height * width) {
         matrix[cur] = i
         var next = Cell(cur.row + dy[curInd], cur.column + dx[curInd])
-        if (!havePosition(matrix, next) || matrix[next] != 0) {
+        if (matrix.havePosition(next) || matrix[next] != 0) {
             curInd = (curInd + 1) % dx.size
             next = Cell(cur.row + dy[curInd], cur.column + dx[curInd])
         }
@@ -123,7 +123,7 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> {
     var cnt = 1
     for (startJ in 0 until width) {
         var pos = Cell(0, startJ)
-        while (havePosition(matrix, pos)) {
+        while (matrix.havePosition(pos)) {
             matrix[pos] = cnt
             cnt++
             pos = Cell(pos.row + 1, pos.column - 1)
@@ -131,7 +131,7 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> {
     }
     for (startI in 1 until height) {
         var pos = Cell(startI, matrix.width - 1)
-        while (havePosition(matrix, pos)) {
+        while (matrix.havePosition(pos)) {
             matrix[pos] = cnt
             cnt++
             pos = Cell(pos.row + 1, pos.column - 1)
@@ -247,7 +247,7 @@ fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> {
     for (i in 0 until matrix.height) {
         for (j in 0 until matrix.width) {
             for (k in 0 until dx.size) {
-                if (havePosition(result, Cell(i + dy[k], j + dx[k]))) {
+                if (result.havePosition(Cell(i + dy[k], j + dx[k]))) {
                     result[i, j] += matrix[i + dy[k], j + dx[k]]
                 }
             }
@@ -275,20 +275,24 @@ fun findHoles(matrix: Matrix<Int>): Holes {
     val rs = mutableListOf<Int>()
     val cs = mutableListOf<Int>()
     for (i in 0 until matrix.height) {
-        val listH = mutableListOf<Int>()
+        var flag = true
         for (j in 0 until matrix.width) {
-            listH += matrix[i, j]
+            if (matrix[i, j] != 0) {
+                flag = false
+            }
         }
-        if (listH.sum() == 0) {
+        if (flag) {
             rs += i
         }
     }
     for (j in 0 until matrix.width) {
-        val listV = mutableListOf<Int>()
+        var flag = true
         for (i in 0 until matrix.height) {
-            listV += matrix[i, j]
+            if (matrix[i, j] != 0) {
+                flag = false
+            }
         }
-        if (listV.sum() == 0) {
+        if (flag) {
             cs += j
         }
     }
@@ -349,7 +353,7 @@ fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> {
  * Вернуть тройку (Triple) -- (да/нет, требуемый сдвиг по высоте, требуемый сдвиг по ширине).
  * Если наложение невозможно, то первый элемент тройки "нет" и сдвиги могут быть любыми.
  */
-    fun canOpenLock(key: Matrix<Int>, lock: Matrix<Int>): Triple<Boolean, Int, Int> {
+fun canOpenLock(key: Matrix<Int>, lock: Matrix<Int>): Triple<Boolean, Int, Int> {
     for (startI in 0 until lock.height) {
         for (startJ in 0 until lock.width) {
             var can = false
@@ -466,7 +470,7 @@ fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> {
         var wasStep = false
         for (k in 0 until dx.size) {
             val next = Cell(cur.row + dy[k], cur.column + dx[k])
-            if (havePosition(result, next) && result[next] == num) {
+            if (result.havePosition(next) && result[next] == num) {
                 result[cur] = result[next]
                 result[next] = 0
                 cur = next

@@ -47,10 +47,10 @@ fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> = MatrixImpl(heig
  *
  * Реализация интерфейса "матрица"
  */
-class MatrixImpl<E> (height: Int, width: Int, e: E) : Matrix<E> {
-    override val height: Int
+class MatrixImpl<E> (mHeight: Int, mWidth: Int, e: E) : Matrix<E> {
+    override val height: Int = mHeight
 
-    override val width: Int
+    override val width: Int = mWidth
 
     private var values : MutableList<E>
 
@@ -58,8 +58,6 @@ class MatrixImpl<E> (height: Int, width: Int, e: E) : Matrix<E> {
         if (height <= 0 || width <= 0) {
             throw IllegalArgumentException()
         }
-        this.height = height
-        this.width = width
         values = MutableList(height * width, { ind -> e } )
     }
 
