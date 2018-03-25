@@ -102,6 +102,8 @@ fun correctWord(word: String) : String {
     for (i in 1 until word.length) {
         if (word[i - 1] in before && word[i] in after) {
             res.append(replace[word[i]])
+        } else {
+            res.append(word[i])
         }
     }
     return res.toString()
@@ -145,14 +147,14 @@ fun centerFile(inputName: String, outputName: String) {
     val list = mutableListOf<String>()
     var maxLen = 0
     for (line in File(inputName).readLines()) {
-        list += line
+        list += line.trim()
         maxLen = Math.max(maxLen, line.length)
     }
 
     val outputStream = File(outputName).bufferedWriter()
     for (line in list) {
         val sb = StringBuilder()
-        val spaces = (maxLen -line.length) / 2
+        val spaces = (maxLen - line.length) / 2
         for (i in 0 until spaces) {
             sb.append(" ")
         }
