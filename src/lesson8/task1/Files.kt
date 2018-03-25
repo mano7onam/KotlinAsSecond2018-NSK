@@ -68,9 +68,6 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
             if (result.containsKey(w)) {
                 result[w] = result[w]!!.plus(1)
             }
-            else {
-                result[w] = 1
-            }
         }
     }
     return result
