@@ -144,8 +144,9 @@ fun centerFile(inputName: String, outputName: String) {
     val list = mutableListOf<String>()
     var maxLen = 0
     for (line in File(inputName).readLines()) {
-        list += line.trim()
-        maxLen = Math.max(maxLen, line.length)
+        val l = line.trim()
+        list += l
+        maxLen = Math.max(maxLen, l.length)
     }
 
     val outputStream = File(outputName).bufferedWriter()
