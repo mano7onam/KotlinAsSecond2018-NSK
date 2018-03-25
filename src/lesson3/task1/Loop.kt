@@ -149,23 +149,11 @@ fun isCoPrime(m: Int, n: Int): Boolean = (gcd(m, n) == 1)
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun doubleIsInt(num: Double) : Boolean {
-    val eps = 1e-9
-    return Math.abs(num - num.toInt()) < eps
-}
-
-fun squareBetweenExists(m: Int, n: Int): Boolean {
-    if (m == 0) {
-        return true
-    }
-    val eps = 1e-9
-    val left = Math.sqrt(m.toDouble() - eps)
-    val right = Math.sqrt(n.toDouble() + eps)
-    return doubleIsInt(left) || doubleIsInt(right) || right.toInt() - left.toInt() > 0
-}
+fun squareBetweenExists(m: Int, n: Int): Boolean =
+        Math.ceil(Math.sqrt(m.toDouble())) <= Math.floor(Math.sqrt(n.toDouble()))
 
 fun main(args: Array<String>) {
-    val res = squareBetweenExists(100000001, 1000000000)
+    val res = squareBetweenExists(1000001, 1000000)
     println("Res: $res")
 }
 
@@ -336,7 +324,8 @@ fun fibSequenceDigit(n: Int): Int {
     var allLen = 0
     var lastNum = 0
     var rest = 0
-    for (num in 1 .. n + 1) {
+    var num = 1
+    while (num <= n + 1) {
         val cut = digitNumber(fib(num))
         if (allLen + cut >= n) {
             allLen += cut
@@ -345,6 +334,7 @@ fun fibSequenceDigit(n: Int): Int {
             break
         }
         allLen += cut
+        num++
     }
 
     return getDigitInNumber(fib(lastNum), rest)
