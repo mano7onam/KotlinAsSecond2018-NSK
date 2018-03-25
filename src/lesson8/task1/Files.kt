@@ -91,9 +91,11 @@ fun correctWord(word: String) : String {
     if (word.isEmpty()) {
         return ""
     }
-    val before = listOf('Ж', 'Ч', 'Ш', 'Щ')
-    val after = listOf('Ы', 'Я', 'Ю')
-    val replace = mutableMapOf('Ы' to 'И', 'Я' to 'А', 'Ю' to 'У')
+    val before = listOf('Ж', 'Ч', 'Ш', 'Щ', 'ж', 'ч', 'ш', 'щ')
+    val after = listOf('Ы', 'Я', 'Ю', 'ы', 'я', 'ю')
+    val replace = mutableMapOf(
+            'Ы' to 'И', 'Я' to 'А', 'Ю' to 'У',
+            'ы' to 'и', 'я' to 'а', 'ю' to 'у')
     val res = StringBuilder()
     res.append(word[0])
     for (i in 1 until word.length) {
