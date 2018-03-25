@@ -47,11 +47,7 @@ fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> = MatrixImpl(heig
  *
  * Реализация интерфейса "матрица"
  */
-class MatrixImpl<E> (mHeight: Int, mWidth: Int, e: E) : Matrix<E> {
-    override val height: Int = mHeight
-
-    override val width: Int = mWidth
-
+class MatrixImpl<E> (override val height: Int, override val width: Int, e: E) : Matrix<E> {
     private var values : MutableList<E>
 
     init {
@@ -97,11 +93,8 @@ class MatrixImpl<E> (mHeight: Int, mWidth: Int, e: E) : Matrix<E> {
             return "[[]]"
         }
         val sb = StringBuilder()
-        // TODO MANO
         return sb.toString()
     }
 
-    /*override fun havePosition(pos: Cell) : Boolean =
-            (pos.row in 0 until height && pos.column in 0 until width)*/
 }
 

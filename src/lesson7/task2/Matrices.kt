@@ -257,6 +257,7 @@ fun findHoles(matrix: Matrix<Int>): Holes {
         for (j in 0 until matrix.width) {
             if (matrix[i, j] != 0) {
                 flag = false
+                break
             }
         }
         if (flag) {
@@ -268,6 +269,7 @@ fun findHoles(matrix: Matrix<Int>): Holes {
         for (i in 0 until matrix.height) {
             if (matrix[i, j] != 0) {
                 flag = false
+                break
             }
         }
         if (flag) {
