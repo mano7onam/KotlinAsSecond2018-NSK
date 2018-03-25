@@ -54,33 +54,17 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  *
  */
 
-fun getWordsFromLine(line: String) : MutableList<String> {
-    val result = mutableListOf<String>()
-    var curWord = ""
-    for (i in 0 until line.length) {
-        if (line[i].isLetter()) {
-            curWord += line[i].toLowerCase()
-        }
-        else {
-            if (!curWord.isEmpty()) {
-                result += curWord
-            }
-            curWord = ""
-        }
-    }
-    if (!curWord.isEmpty()) {
-        result += curWord
-    }
-    return result
-}
-
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val result = mutableMapOf<String, Int>()
+    for (w in substrings) {
+        result[w] = 0
+    }
+
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
             continue
         }
-        for (w in getWordsFromLine(line)) {
+        for (w in line.split(Regex("[^a-zA-Zа-яА-Я]"))) {
             if (result.containsKey(w)) {
                 result[w] = result[w]!!.plus(1)
             }
@@ -131,7 +115,7 @@ fun sibilants(inputName: String, outputName: String) {
             continue
         }
         val outputList = mutableListOf<String>()
-        for (w in getWordsFromLine(line)) {
+        for (w in line.split(Regex("[^a-zA-Zа-яА-Я]"))) {
             outputList += correctWord(w)
         }
         outputStream.write(outputList.joinToString(separator = " "))
