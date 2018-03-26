@@ -2,6 +2,7 @@
 package lesson8.task1
 
 import java.io.File
+import java.util.regex.Pattern
 
 /**
  * Пример
@@ -57,6 +58,7 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val result = mutableMapOf<String, Int>()
     val mapmap = mutableMapOf<String, String>()
+    val delim = "[^абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]"
     for (w in substrings) {
         result[w] = 0
         mapmap[w.toLowerCase()] = w
@@ -66,7 +68,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
         if (line.isEmpty()) {
             continue
         }
-        for (w in line.split(Regex("[^a-zA-Zа-яА-ЯёЁЬьЪъйЙ]"))) {
+        for (w in line.split(Regex(delim))) {
             val lw = w.toLowerCase()
             if (mapmap.containsKey(lw)) {
                 val sourceStr = mapmap[lw]!!
@@ -79,9 +81,10 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
 
 fun main(args: Array<String>) {
     val text = "бваваааа --- ннайвбэ  бвЭиббжНаыкадПХаб, ВЪВХЩББАННАФБЮАВН, бабгвбёТббвбаПаШбб, нлбщббвклбапвнббла / бабгвбёТббвбаПаШбб --- бвэиббжнаыкадпхаб: ВЪВХЩББАННАФБЮАВН\nБТВБШДАБ --- ННАЙВБЭ, ННаЙвбэ: бабгвбёТббвбаПаШбб -- БАБГВБЁТББВБАПАШББ -- ННАЙВБЭ  нЛбЩббвклбапвнбблА - бввчабывбббввбеёбы - НЛБЩББВКЛБАПВНББЛА\nБВВЧАБЫВБББВВБЕЁБЫ - бввчабывбббввбеёбы - ТЫБЖББББ -- НЛБЩББВКЛБАПВНББЛА / бВвЧАбЫвбббввбеёбы; БАБГВБЁТББВБАПАШББ / тЫбЖбббб: тыбжбббб  ННаЙвбэ  ывДУЗалбтшбб  ннайвбэ --- бваваааа --- бВвЧАбЫвбббввбеёбы; БВВЧАБЫВБББВВБЕЁБЫ -- БВАВАААА -- бвэиббжнаыкадпхаб, ННАЙВБЭ --- БВАВАААА  бабгвбётббвбапашбб / ННаЙвбэ, НЛБЩББВКЛБАПВНББЛА; БВВЧАБЫВБББВВБЕЁБЫ -- БВЭИББЖНАЫКАДПХАБ / бваваааа --- бтвбшДаб  бВвЧАбЫвбббввбеёбы / бабгвбёТббвбаПаШбб / бвэиббжнаыкадпхаб: БТВБШДАБ --- "
-    for (w in text.split(Regex("[^a-zA-Zа-яА-ЯёЁЬьЪъйЙ]"))) {
+    val delim = "[^абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]"
+    for (w in text.split(Regex(delim))) {
         if (!w.isEmpty()) {
-            println(w.toLowerCase())
+            println(w)
         }
     }
 }
