@@ -100,40 +100,27 @@ fun main(args: Array<String>) {
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
-fun correctWord(word: String) : String {
-    if (word.isEmpty()) {
-        return ""
-    }
+fun sibilants(inputName: String, outputName: String) {
     val before = listOf('Ж', 'Ч', 'Ш', 'Щ', 'ж', 'ч', 'ш', 'щ')
-    val after = listOf('Ы', 'Я', 'Ю', 'ы', 'я', 'ю')
+    val current = listOf('Ы', 'Я', 'Ю', 'ы', 'я', 'ю')
     val replace = mutableMapOf(
             'Ы' to 'И', 'Я' to 'А', 'Ю' to 'У',
             'ы' to 'и', 'я' to 'а', 'ю' to 'у')
-    val res = StringBuilder()
-    res.append(word[0])
-    for (i in 1 until word.length) {
-        if (word[i - 1] in before && word[i] in after) {
-            res.append(replace[word[i]])
-        } else {
-            res.append(word[i])
-        }
-    }
-    return res.toString()
-}
 
-fun sibilants(inputName: String, outputName: String) {
     val outputStream = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
             outputStream.newLine()
             continue
         }
-        val outputList = mutableListOf<String>()
-        // TODO - other symbols (not words) not print now - it's bad
-        for (w in line.split(Regex("[^a-zA-Zа-яА-Я]"))) {
-            outputList += correctWord(w)
+        for (i in 0 until line.length) {
+            if (i > 0 && line[i - 1] in before && line[i] in current) {
+                val symb = replace[line[i]]
+                outputStream.write(symb.toString())
+            } else {
+                outputStream.write(line[i].toString())
+            }
         }
-        outputStream.write(outputList.joinToString(separator = " "))
         outputStream.newLine()
     }
     outputStream.close()
