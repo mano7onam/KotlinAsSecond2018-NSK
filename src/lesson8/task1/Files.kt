@@ -56,6 +56,26 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  *
  */
 
+fun zFunctoin(p: String, t: String) : Array<Int> {
+    val s = p + "#" + t
+    var l = 0
+    var r = 0
+    val zf = Array(s.length, { _ -> 0 })
+    for (i in 0 until s.length) {
+        zf[i] = Math.min(zf[i - l], r - i + 1)
+        while (i + zf[i] < s.length && s[zf[i]] == s[i + zf[i]]) {
+            ++zf[i]
+        }
+        if (i + zf[i] > r) {
+            l = i
+            r = i + zf[i] - 1
+        }
+    }
+    l = p.length + 1
+    r = s.length - 1
+    return zf.sliceArray(l .. r)
+}
+
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val result = mutableMapOf<String, Int>()
     for (w in substrings) {
@@ -69,16 +89,13 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
         val lowerLine = line.toLowerCase()
         for (w in substrings) {
             val lw = w.toLowerCase()
-            var cnt = 0
-            var lastIndex = 0
-            while (lastIndex != -1) {
-                lastIndex = lowerLine.indexOf(lw, lastIndex)
-                if (lastIndex != -1) {
-                    cnt++
+            val zf = zFunctoin(lw, lowerLine)
+            val wsz = w.length
+            for (i in 0 until zf.size) {
+                if (zf[i] == wsz) {
+                    result[w] = result[w]!!.plus(1)
                 }
-                lastIndex++
             }
-            result[w] = result[w]!!.plus(1)
         }
     }
     return result
