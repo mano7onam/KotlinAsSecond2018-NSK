@@ -66,7 +66,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
         if (line.isEmpty()) {
             continue
         }
-        for (w in line.split(Regex("[^a-zA-Zа-яА-Я]"))) {
+        for (w in line.split(Regex("[^a-zA-Zа-яА-ЯёЁЬьЪъйЙ]"))) {
             val lw = w.toLowerCase()
             if (mapmap.containsKey(lw)) {
                 val sourceStr = mapmap[lw]!!
@@ -75,6 +75,15 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
         }
     }
     return result
+}
+
+fun main(args: Array<String>) {
+    val text = "бваваааа --- ннайвбэ  бвЭиббжНаыкадПХаб, ВЪВХЩББАННАФБЮАВН, бабгвбёТббвбаПаШбб, нлбщббвклбапвнббла / бабгвбёТббвбаПаШбб --- бвэиббжнаыкадпхаб: ВЪВХЩББАННАФБЮАВН\nБТВБШДАБ --- ННАЙВБЭ, ННаЙвбэ: бабгвбёТббвбаПаШбб -- БАБГВБЁТББВБАПАШББ -- ННАЙВБЭ  нЛбЩббвклбапвнбблА - бввчабывбббввбеёбы - НЛБЩББВКЛБАПВНББЛА\nБВВЧАБЫВБББВВБЕЁБЫ - бввчабывбббввбеёбы - ТЫБЖББББ -- НЛБЩББВКЛБАПВНББЛА / бВвЧАбЫвбббввбеёбы; БАБГВБЁТББВБАПАШББ / тЫбЖбббб: тыбжбббб  ННаЙвбэ  ывДУЗалбтшбб  ннайвбэ --- бваваааа --- бВвЧАбЫвбббввбеёбы; БВВЧАБЫВБББВВБЕЁБЫ -- БВАВАААА -- бвэиббжнаыкадпхаб, ННАЙВБЭ --- БВАВАААА  бабгвбётббвбапашбб / ННаЙвбэ, НЛБЩББВКЛБАПВНББЛА; БВВЧАБЫВБББВВБЕЁБЫ -- БВЭИББЖНАЫКАДПХАБ / бваваааа --- бтвбшДаб  бВвЧАбЫвбббввбеёбы / бабгвбёТббвбаПаШбб / бвэиббжнаыкадпхаб: БТВБШДАБ --- "
+    for (w in text.split(Regex("[^a-zA-Zа-яА-ЯёЁЬьЪъйЙ]"))) {
+        if (!w.isEmpty()) {
+            println(w.toLowerCase())
+        }
+    }
 }
 
 
@@ -120,6 +129,7 @@ fun sibilants(inputName: String, outputName: String) {
             continue
         }
         val outputList = mutableListOf<String>()
+        // TODO - other symbols (not words) not print now - it's bad
         for (w in line.split(Regex("[^a-zA-Zа-яА-Я]"))) {
             outputList += correctWord(w)
         }
